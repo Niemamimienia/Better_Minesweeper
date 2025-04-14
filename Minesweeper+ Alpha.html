@@ -13,28 +13,44 @@
                 height: 100%;
                 background-color: #ddd;
             }
+            .flaged{
+                width: 100%;
+                height: 100%;
+                background-color: #a00000;
+            }
         </style>
     </head>
     <body>
         <div id="main"></div>
         <script>
-            var size = 10;
-            var bombs = 12;
+            var size = 16;
+            var bombs = 28;
             var value = "";
+            var mainlist = [];
             var bomblist = [];
             var checklist = [];
             var checknext = [];
             function generate(){
+                for(i=0;i<=size*size;i++){
+                    mainlist.push([i, 0]);
+                }
                 value += "<table>";
                 for(i=0;i<size;i++){
                     value += "<tr>";
                     for(j=0;j<size;j++){
-                        value += `<td><div style=" text-align: center; font-size: ${450/size}px; width: ${600/size}px; height: ${600/size}px;" class="block" id='a${j + i*size + 1}' onclick="check(${j + i*size + 1})"></div></td>`
+                        value += `<td><div style=" text-align: center; font-size: ${500/size}px; width: ${800/size}px; height: ${700/size}px;" class="block" id='a${j + i*size + 1}' "></div></td>`
                     }
                     value += "</tr>";
                 }
                 value += "</table>";
                 document.getElementById('main').innerHTML=value;
+                for(let i=1;i<=size*size;i++){
+                    if(mainlist[i][1]==0){document.getElementById(`a${i}`).addEventListener('click', () => check(i));}
+                    document.getElementById(`a${i}`).addEventListener('contextmenu', (event) => {
+                    event.preventDefault(); 
+                    flag(i);
+                    });
+                }
                 bomb();
             }
             function bomb(){
@@ -50,16 +66,19 @@
                     }
                 }
             }
-            function check(x){
-                var exec = true;
-                for(i=0;i<checklist.length;i++){
-                    if(checklist[i]==x){
-                        exec = false;
-                        break;
-                    }
+            function flag(x){
+                if(mainlist[x][1] == 0){
+                    document.getElementById(`a${x}`).innerHTML='<div class="flaged"></div>';
+                    mainlist[x][1] = 2;
                 }
+                else if(mainlist[x][1] == 2){
+                    document.getElementById(`a${x}`).innerHTML='';
+                    mainlist[x][1] = 0;
+                }
+            }
+            function check(x){
                 var count = 0
-                if(exec == true){
+                if(mainlist[x][1] == 0 || mainlist[x][1] == 2){
                     for(i=0;i<bomblist.length;i++){
                         if(x==bomblist[i]){count+=10;}
                         if(x+size==bomblist[i]){count+=1;}
@@ -71,7 +90,7 @@
                         if((x-1+size==bomblist[i]) && (x % size != 1)){count+=1;}
                         if((x-1-size==bomblist[i]) && (x % size != 1)){count+=1;}
                     }
-                    checklist.push(x);
+                    mainlist[x][1] = 1
                     if(count==0){
                         if(x % size != 0){checknext.push(x+1);}
                         if(x % size != 1){checknext.push(x-1);}
