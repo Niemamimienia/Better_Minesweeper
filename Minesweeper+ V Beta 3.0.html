@@ -173,9 +173,12 @@
         <div id="main"></div>
         <script>
             const roma = ['I','II','III','IV'];
+            const multi = ['Double','Triple','Quadruple']
+            var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
             var lvl = 1;
             var size = 9;
             var bombs = [10, 0];
+            var cap = [false];
             var bombscopy = [10, 0];
             var bombsum = 10;
             var places = 0;
@@ -205,46 +208,103 @@
                     inc = 2;
                     a = 8;
                     b = [6, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
                 else if(lvl==2){
                     ti = 90;
                     inc = 1.5;
                     a = 10;
                     b = [10, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
                 else if(lvl==3){
                     ti = 120;
                     inc = 1.1;
                     a = 12;
                     b = [15, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
                 else if(lvl==4){
                     ti = 150;
                     inc = 0.8;
                     a = 14;
                     b = [22, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
                 else if(lvl==5){
                     ti = 180;
                     inc = 0.6;
                     a = 16;
                     b = [30, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
                 else if(lvl==6){
                     ti = 180;
                     inc = 0.6;
                     a = 16;
                     b = [24, 6, 0, 0];
+                    c = [false];
+                    ar = 'basic';
                 }
-                generate(ti, inc, a, b);
+                info(ti, inc, a, b, c, ar)
             }
-            function generate(ti, inc, a, b){
+            function info(ti, inc, a, b, c, ar){
+                let val = ''
+                document.getElementById('main').innerHTML=`
+                    <div id='con' style='text-align: center;'>
+                        <div class='space'></div>
+                        <div class='big'>Level ${lvl}</div>
+                        <div class='space2'></div>
+                        <div class='med'>Board Size: ${a} x ${a}</div>
+                        <div class='space'></div>
+                        <div id='bombtypes' class='med'></div>
+                        <div class='med'>Time: ${ti} + ${inc} sec </div>
+                        <div class='space'></div>
+                        <div class='med'>Number Showing: ${ar} </div>
+                        <div class='space'></div>
+                        <input class="checker" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, ar)">
+                    </div>`
+                for(i=-1;i<multi.length;i++){
+                    if(b[i+1]>0){
+                        if(i<0){
+                            if(c[0]==false){val += `<div class='med'>Bombs: ${b[i+1]}</div><div class='space'></div>`}
+                            else{val += `<div class='med'>Bombs: ???</div><div class='space'></div>`}
+                        }
+                        else{
+                            if(c[0]==false){val += `<div class='med'>${multi[i]} Bombs: ${b[i+1]}</div><div class='space'></div>`}
+                            else{val += `<div class='med'>${multi[i]} Bombs: ???</div><div class='space'></div>`}
+                        }
+                    }
+                }
+                document.getElementById('bombtypes').innerHTML=val;    
+            }
+            function generate(ti, inc, a, b, ar){
                 size = a;
                 bombs = b;
+                cap = c;
+                if(cap[0]==true){
+                    for(i=1;i<cap.length;i++){
+                        bombs[i-1] += Math.floor(Math.random()*(cap[i]+1));
+                    }
+                }
                 bombscopy = [];
                 for(i=0;i<bombs.length;i++){bombscopy.push(bombs[i]);}
                 t = ti;
                 inc = inc;
+                if(ar == 'basic'){
+                    area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+                }
+                else if(ar == 'knight'){
+                    area = [[-2,-1],[-2,1],[-1,2],[-1,-2],[1,2],[1,-2],[2,1],[2,-1]];
+                }
+                else if(ar == 'poor'){
+                    area = [[1,0],[-1,0],[0,1],[0,-1]];
+                }
                 places = 0;
                 mainlist = [];
                 bomblist = [];
@@ -259,8 +319,8 @@
                     bombsum += bombs[i];
                 }
                 places = size*size-bombsum;
-                var value = "";
-                value += `
+                let val = "";
+                val += `
                     <div id='con'>
                         <div id='border'></div>
                         <div id='properties'>
@@ -278,23 +338,23 @@
                         </div>
                     </div>
                     `
-                document.getElementById('main').innerHTML=value;value='';
+                document.getElementById('main').innerHTML=val;val='';
                 document.getElementById('bombscounter').innerHTML=bombdisplay();
-                value += `<table style='border-collapse: collapse; padding: 0; margin: 0;'>`;
+                val += `<table style='border-collapse: collapse; padding: 0; margin: 0;'>`;
                 for(i=0;i<size;i++){
-                    value += "<tr>";
+                    val += "<tr>";
                     for(j=0;j<size;j++){
-                        value += `
+                        val += `
                             <td style='padding: 0; margin: 0;'>
                                 <div style=" text-align: center; font-size: ${500/size}px; width: ${650/size}px; height: ${650/size}px; border: ${30/size}px #888 solid; font-weight: 700;" id='a${j + i*size + 1}' ">
                                     <div class='unchecked'></div>
                                 </div>
                             </td>`
                     }
-                    value += "</tr>";
+                    val += "</tr>";
                 }
-                value += "</table>";
-                document.getElementById('border').innerHTML=value;value='';
+                val += "</table>";
+                document.getElementById('border').innerHTML=val;val='';
                 placecount();
                 for(i=1;i<flagallow.length;i++){
                         if(flagallow[i]==true){flagcount(i);}
@@ -346,12 +406,9 @@
                 }
             }
             function bomb(x){
-                var redflag = [x-size, x, x+size];
-                if(x % size != 0){
-                    redflag.push(x-size+1);redflag.push(x+1);redflag.push(x+size+1);
-                }
-                if(x % size != 1){
-                    redflag.push(x-size-1);redflag.push(x-1);redflag.push(x+size-1);
+                var redflag = [x];
+                for(let i=0;i<area.length;i++){
+                    if(checkarea(x, i)){redflag.push(x+area[i][0]+area[i][1]*size)}
                 }
                 var a = 0
                 while(bomblist.length<bombsum){
@@ -413,30 +470,38 @@
                 if(mainlist[x][1] != 1){
                     for(i=0;i<bomblist.length;i++){
                         if(x==bomblist[i]){count+=100;}
-                        if(x+size==bomblist[i]){count+=mainlist[bomblist[i]][2];}
-                        if(x-size==bomblist[i]){count+=mainlist[bomblist[i]][2];}
-                        if((x+1==bomblist[i]) && (x % size != 0)){count+=mainlist[bomblist[i]][2];}
-                        if((x+1+size==bomblist[i]) && (x % size != 0)){count+=mainlist[bomblist[i]][2];}
-                        if((x+1-size==bomblist[i]) && (x % size != 0)){count+=mainlist[bomblist[i]][2];}
-                        if((x-1==bomblist[i]) && (x % size != 1)){count+=mainlist[bomblist[i]][2];}
-                        if((x-1+size==bomblist[i]) && (x % size != 1)){count+=mainlist[bomblist[i]][2];}
-                        if((x-1-size==bomblist[i]) && (x % size != 1)){count+=mainlist[bomblist[i]][2];}
+                        else{
+                            for(j=0;j<area.length;j++){
+                                if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){count+=mainlist[bomblist[i]][2];}
+                            }
+                        }
                     }
-                    mainlist[x][1] = 1
+                    mainlist[x][1] = 1;
                     if(count==0){
-                        if(x % size != 0){checknext.push(x+1);}
-                        if(x % size != 1){checknext.push(x-1);}
-                        if(x + size <= size*size){checknext.push(x+size);}
-                        if(x > size){checknext.push(x-size);}
-                        if((x % size != 0) && (x + size <= size*size)){checknext.push(x+size+1);}
-                        if((x % size != 1) && (x + size <= size*size)){checknext.push(x+size-1);}
-                        if((x % size != 0) && (x > size)){checknext.push(x-size+1);}
-                        if((x % size != 1) && (x > size)){checknext.push(x-size-1);}
-                    };
+                        for(let i=0; i<area.length; i++){
+                            if(checkarea(x, i)){checknext.push(x+area[i][0]+size*area[i][1])}
+                        }
+                    }
                     changevalue(x, count);
                     bonus();
                 }
                 next();
+            }
+            function checkarea(x, y){
+                var allow = true;
+                if(area[y][0]<0 && (x-1) % size < Math.abs(area[y][0])){
+                    allow = false;
+                }
+                else if(area[y][0]>0 && (x-1) % size >= size - area[y][0]){
+                    allow = false;
+                }
+                if(area[y][1]<0 && x <= size * Math.abs(area[y][1])){
+                    allow = false;
+                }
+                else if(area[y][1]>0 && x + size * area[y][1] > size*size){
+                    allow = false;
+                }
+                return allow;
             }
             function next(){
                 if(checknext.length>0){
@@ -454,14 +519,22 @@
             function changevalue(x, count){
                 if(count>99){lose();}
                 else if(count == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
-                else if(count == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: blue;'>${count}</div>`;}
-                else if(count == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: green;'>${count}</div>`;}
-                else if(count == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: red;'>${count}</div>`;}
-                else if(count == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: purple;'>${count}</div>`;}
-                else if(count == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: darkred;'>${count}</div>`;}
-                else if(count == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: cadetblue;'>${count}</div>`;}
-                else if(count == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: black;'>${count}</div>`;}
-                else if(count == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: gray;'>${count}</div>`;}
+                else if(count == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #1976d2;'>${count}</div>`;}
+                else if(count == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #388e3c;'>${count}</div>`;}
+                else if(count == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #d32f2f;'>${count}</div>`;}
+                else if(count == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #7b1fa2;'>${count}</div>`;}
+                else if(count == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #910000;'>${count}</div>`;}
+                else if(count == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #4CA1A1;'>${count}</div>`;}
+                else if(count == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #964600;'>${count}</div>`;}
+                else if(count == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #616161;'>${count}</div>`;}
+                else if(count == 9){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #0800A8;'>${count}</div>`;}
+                else if(count == 10){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004212;'>${count}</div>`;}
+                else if(count == 11){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #99004A;'>${count}</div>`;}
+                else if(count == 12){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #400032;'>${count}</div>`;}
+                else if(count == 13){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #692A2A;'>${count}</div>`;}
+                else if(count == 14){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004A59;'>${count}</div>`;}
+                else if(count == 15){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #383838;'>${count}</div>`;}
+                else if(count >= 16){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #000;'>${count}</div>`;}
                 else{document.getElementById(`a${x}`).innerHTML=`<div class="checked">${count}</div>`;}
             }
             function flagcount(x){
@@ -471,7 +544,8 @@
                         flags++;
                     }
                 }
-                document.getElementById(`bombcounter${x}`).innerHTML=`${flags}/${bombscopy[x-1]} Bombs ${roma[x-1]}`;
+                if(cap[0]==false){document.getElementById(`bombcounter${x}`).innerHTML=`Bombs ${roma[x-1]}: ${flags} / ${bombscopy[x-1]}`;}
+                else{document.getElementById(`bombcounter${x}`).innerHTML=`Bombs ${roma[x-1]}: ${flags} / ???`;}
             }
             function placecount(){
                 var place = 0;
@@ -481,7 +555,8 @@
                         if(place>=places){win();}
                     }
                 }
-                document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;
+                if(cap[0]==false){document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;}
+                else{document.getElementById('placecounter').innerHTML='Places: '+place+' / ???'}
             }
             function lose(){
                 clearInterval(interval);
