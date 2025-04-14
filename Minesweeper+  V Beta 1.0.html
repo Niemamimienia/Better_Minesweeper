@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background-color: #080808;
+                font-family: Arial;
+                color: white;
+            }
+            #con{
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #232323;
+                border: #666 15px solid;
+                width: 1200px;
+                min-height: 780px;
+                border-radius: 15px;
+            }
+            .hspace{
+                height: 15px;
+            }
+            .space{
+                height: 30px;
+            }
+            .space2{
+                height: 60px;
+            }
+            .space4{
+                height: 120px;
+            }
+            .space8{
+                height: 240px;
+            }
+            .huge{
+                font-size: 85px;
+                font-weight: 700;
+            }
+            .big{
+                font-size: 60px;
+                font-weight: 600;
+            }
+            .med{
+                font-size: 40px;
+                font-weight: 500;
+            }
+            .small{
+                font-size: 25px;
+                font-weight: 500;
+            }
+            .tiny{
+                font-size: 15px;
+                font-weight: 500;
+            }
+            .startbutton{
+                width: 350px;
+                height: 120px;
+                font-size: 60px;
+                border-radius: 15px;
+                border: 5px #666 solid;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #ddd;
+                font-weight: 700;
+                display: flex;
+                justify-content: center;
+                transition: .4s all ease-in-out;
+            }
+            .startbutton:hover{
+                width: 340px;
+                height: 114px;
+                margin-top: 3px;
+                margin-bottom: 3px;
+                border: 5px #1e4 solid;
+            }
+            .modebutton{
+                width: 400px;
+                height: 65px;
+                font-size: 40px;
+                border-radius: 8px;
+                border: 3px #666 solid;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #ddd;
+                font-weight: 700;
+                display: flex;
+                justify-content: center;
+                transition: .4s all ease-in-out;
+            }
+            .modebutton:hover{
+                width: 394px;
+                height: 61px;
+                margin-top: 2px;
+                margin-bottom: 2px;
+                border: 3px #1e4 solid;
+            }
+            .unchecked{
+                width: 100%;
+                height: 100%;
+                cursor: Pointer;
+                background-color: #aaa;
+            }
+            .checked{
+                width: 100%;
+                height: 100%;
+                background-color: #ddd;
+            }
+            .flaged{
+                width: 100%;
+                height: 100%;
+                background-color: #a00000;
+            }
+            #border{
+                margin: 30px;
+                float: left;
+            }
+            #properties{
+                margin: 30px;
+                float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main"></div>
+        <script>
+            var size = 16;
+            var bombs = 48;
+            var places = 0;
+            var mainlist = [];
+            var bomblist = [];
+            var checklist = [];
+            var checknext = [];
+            function start(){
+                document.getElementById("main").innerHTML =`
+                <div id="con">
+                    <div class="huge" style="text-align: center; margin: 20px;">Minesweeper</div>
+                    <div class="space2"></div>
+                    <input type="button" class="startbutton" value="Start" onclick="generate()">
+                </div>`;
+                }
+            function generate(){
+                places = size*size-bombs;
+                for(i=0;i<=size*size;i++){
+                    mainlist.push([i, 0]);
+                }
+                var value = "";
+                value += `
+                    <div id='con'>
+                        <div id='border'></div>
+                        <div id='properties'>
+                            <div class='space8'></div>
+                            <div id='placecounter' class='med'></div>
+                            <div class='space'></div>
+                            <div id='bombcounter' class='med'></div>
+                        </div>
+                    </div>
+                    `
+                document.getElementById('main').innerHTML=value;value='';
+                value += `<table style='border-collapse: collapse; padding: 0; margin: 0;'>`;
+                for(i=0;i<size;i++){
+                    value += "<tr>";
+                    for(j=0;j<size;j++){
+                        value += `
+                            <td style='padding: 0; margin: 0;'>
+                                <div style=" text-align: center; font-size: ${500/size}px; width: ${650/size}px; height: ${650/size}px; border: ${30/size}px #888 solid; font-weight: 700;" id='a${j + i*size + 1}' ">
+                                    <div class='unchecked'></div>
+                                </div>
+                            </td>`
+                    }
+                    value += "</tr>";
+                }
+                value += "</table>";
+                document.getElementById('border').innerHTML=value;value='';
+                flagcount();placecount();
+                for(let i=1;i<=size*size;i++){
+                    document.getElementById(`a${i}`).addEventListener('click', () => check(i));
+                    document.getElementById(`a${i}`).addEventListener('contextmenu', (event) => {
+                    event.preventDefault(); 
+                    flag(i);
+                    });
+                }
+            }
+            function bomb(x){
+                var redflag = [x-size, x, x+size];
+                if(x % size != 0){
+                    redflag.push(x-size+1);redflag.push(x+1);redflag.push(x+size+1);
+                }
+                if(x % size != 1){
+                    redflag.push(x-size-1);redflag.push(x-1);redflag.push(x+size-1);
+                }
+                var a = 0
+                while(bomblist.length<bombs){
+                    var nw = true
+                    a = Math.floor(Math.random()*size*size)
+                    for(i=0;i<bomblist.length;i++){
+                        if(a==bomblist[i]){nw = false; break;}
+                    }
+                    if(nw == true){
+                        for(i=0;i<redflag.length;i++){
+                            if(a==redflag[i]){nw = false; break;}
+                        }
+                    }
+                    if(nw == true){
+                        bomblist.push(a);
+                    }
+                }
+            }
+            function flag(x){
+                if(mainlist[x][1] == 0){
+                    document.getElementById(`a${x}`).innerHTML='<div class="flaged"></div>';
+                    mainlist[x][1] = 2;
+                }
+                else if(mainlist[x][1] == 2){
+                    document.getElementById(`a${x}`).innerHTML='<div class="unchecked"></div>';
+                    mainlist[x][1] = 0;
+                }
+                flagcount();
+            }
+            function check(x){
+                if(bomblist.length == 0){
+                    bomb(x);
+                }
+                var count = 0
+                if(mainlist[x][1] == 0 || mainlist[x][1] == 2){
+                    for(i=0;i<bomblist.length;i++){
+                        if(x==bomblist[i]){count+=100;}
+                        if(x+size==bomblist[i]){count+=1;}
+                        if(x-size==bomblist[i]){count+=1;}
+                        if((x+1==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x+1+size==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x+1-size==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x-1==bomblist[i]) && (x % size != 1)){count+=1;}
+                        if((x-1+size==bomblist[i]) && (x % size != 1)){count+=1;}
+                        if((x-1-size==bomblist[i]) && (x % size != 1)){count+=1;}
+                    }
+                    mainlist[x][1] = 1
+                    if(count==0){
+                        if(x % size != 0){checknext.push(x+1);}
+                        if(x % size != 1){checknext.push(x-1);}
+                        if(x + size <= size*size){checknext.push(x+size);}
+                        if(x > size){checknext.push(x-size);}
+                        if((x % size != 0) && (x + size <= size*size)){checknext.push(x+size+1);}
+                        if((x % size != 1) && (x + size <= size*size)){checknext.push(x+size-1);}
+                        if((x % size != 0) && (x > size)){checknext.push(x-size+1);}
+                        if((x % size != 1) && (x > size)){checknext.push(x-size-1);}
+                    };
+                    changevalue(x, count);
+                }
+                next();
+            }
+            function next(){
+                if(checknext.length>0){
+                    var x = checknext[checknext.length-1];
+                    checknext.pop();
+                    check(x)
+                }
+                else{flagcount();placecount();}
+            }
+            function changevalue(x, count){
+                if(count>99){lose();}
+                else if(count == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
+                else if(count == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: blue;'>${count}</div>`;}
+                else if(count == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: green;'>${count}</div>`;}
+                else if(count == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: red;'>${count}</div>`;}
+                else if(count == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: purple;'>${count}</div>`;}
+                else if(count == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: darkred;'>${count}</div>`;}
+                else if(count == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: cadetblue;'>${count}</div>`;}
+                else if(count == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: black;'>${count}</div>`;}
+                else if(count == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: gray;'>${count}</div>`;}
+                else{document.getElementById(`a${x}`).innerHTML=`<div class="checked">${count}</div>`;}
+            }
+            function flagcount(){
+                var flags = 0;
+                for(i=0;i<mainlist.length;i++){
+                    if(mainlist[i][1] == 2){
+                        flags++;
+                    }
+                }
+                document.getElementById('bombcounter').innerHTML='Bombs: '+flags+' / '+bombs;
+            }
+            function placecount(){
+                var place = 0;
+                for(i=0;i<mainlist.length;i++){
+                    if(mainlist[i][1] == 1){
+                        place++;
+                    }
+                }
+                document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;
+            }
+            function lose(){
+                document.getElementById('main').innerHTML='<h1>WYBUCHASZ!</h1>'
+            }
+            start();
+        </script>
+    </body>
+</html>
