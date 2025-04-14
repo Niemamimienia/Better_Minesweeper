@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                font-family: Arial;
+            }
+            .block{
+                background-color: #aaa;
+            }
+            .checked{
+                width: 100%;
+                height: 100%;
+                background-color: #ddd;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main"></div>
+        <script>
+            var size = 10;
+            var bombs = 12;
+            var value = "";
+            var bomblist = [];
+            var checklist = [];
+            var checknext = [];
+            function generate(){
+                value += "<table>";
+                for(i=0;i<size;i++){
+                    value += "<tr>";
+                    for(j=0;j<size;j++){
+                        value += `<td><div style=" text-align: center; font-size: ${450/size}px; width: ${600/size}px; height: ${600/size}px;" class="block" id='a${j + i*size + 1}' onclick="check(${j + i*size + 1})"></div></td>`
+                    }
+                    value += "</tr>";
+                }
+                value += "</table>";
+                document.getElementById('main').innerHTML=value;
+                bomb();
+            }
+            function bomb(){
+                var a = 0
+                while(bomblist.length<bombs){
+                    var nw = true
+                    a = Math.floor(Math.random()*size*size)
+                    for(i=0;i<bomblist.length;i++){
+                        if(a==bomblist[i]){nw = false; break;}
+                    }
+                    if(nw == true){
+                        bomblist.push(a);
+                    }
+                }
+            }
+            function check(x){
+                var exec = true;
+                for(i=0;i<checklist.length;i++){
+                    if(checklist[i]==x){
+                        exec = false;
+                        break;
+                    }
+                }
+                var count = 0
+                if(exec == true){
+                    for(i=0;i<bomblist.length;i++){
+                        if(x==bomblist[i]){count+=10;}
+                        if(x+size==bomblist[i]){count+=1;}
+                        if(x-size==bomblist[i]){count+=1;}
+                        if((x+1==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x+1+size==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x+1-size==bomblist[i]) && (x % size != 0)){count+=1;}
+                        if((x-1==bomblist[i]) && (x % size != 1)){count+=1;}
+                        if((x-1+size==bomblist[i]) && (x % size != 1)){count+=1;}
+                        if((x-1-size==bomblist[i]) && (x % size != 1)){count+=1;}
+                    }
+                    checklist.push(x);
+                    if(count==0){
+                        if(x % size != 0){checknext.push(x+1);}
+                        if(x % size != 1){checknext.push(x-1);}
+                        if(x + size <= size*size){checknext.push(x+size);}
+                        if(x > size){checknext.push(x-size);}
+                        if((x % size != 0) && (x + size <= size*size)){checknext.push(x+size+1);}
+                        if((x % size != 1) && (x + size <= size*size)){checknext.push(x+size-1);}
+                        if((x % size != 0) && (x > size)){checknext.push(x-size+1);}
+                        if((x % size != 1) && (x > size)){checknext.push(x-size-1);}
+                    };
+                    changevalue(x, count);
+                }
+                next();
+            }
+            function next(){
+                if(checknext.length>0){
+                    var x = checknext[checknext.length-1];
+                    checknext.pop();
+                    check(x)
+                }
+            }
+            function changevalue(x, count){
+                if(count>8){document.getElementById(`a${x}`).innerHTML='@';}
+                else if(count == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
+                else if(count == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: blue;'>${count}</div>`;}
+                else if(count == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: green;'>${count}</div>`;}
+                else if(count == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: red;'>${count}</div>`;}
+                else if(count == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: purple;'>${count}</div>`;}
+                else if(count == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: darkred;'>${count}</div>`;}
+                else if(count == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: cadetblue;'>${count}</div>`;}
+                else if(count == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: black;'>${count}</div>`;}
+                else if(count == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: gray;'>${count}</div>`;}
+                else{document.getElementById(`a${x}`).innerHTML=`<div class="checked">${count}</div>`;}
+            }
+            generate();
+        </script>
+    </body>
+</html>
