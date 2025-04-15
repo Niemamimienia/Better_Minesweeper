@@ -128,6 +128,12 @@
                 background-color: #6d0000;
                 color: black;
             }
+            .flaged5{
+                width: 100%;
+                height: 100%;
+                background-color: #00d8e3;
+                color: black;
+            }
             #border{
                 margin: 30px;
                 float: left;
@@ -167,15 +173,62 @@
                 background-color: #00939d;
                 height: 100%;
             }
+            .locked{
+                width: 120px;
+                height: 120px;
+                font-size: 90px;
+                font-weight: 700;
+                border-radius: 30px;
+                border: 10px gray solid;
+                background-color: lightgray;
+                margin: 15px;
+                float: left;
+                color: black;
+                text-align: center;
+            }
+            .unlocked{
+                width: 120px;
+                height: 120px;
+                font-size: 90px;
+                font-weight: 700;
+                border-radius: 30px;
+                border: 10px rgb(0, 148, 37) solid;
+                background-color: rgb(162, 201, 173);
+                margin: 15px;
+                float: left;
+                color: black;
+                text-align: center;
+                cursor: Pointer;
+            }
+            .completed{
+                width: 120px;
+                height: 120px;
+                font-size: 90px;
+                font-weight: 700;
+                border-radius: 30px;
+                border: 10px rgb(7, 133, 150) solid;
+                background-color: rgb(162, 194, 201);
+                margin: 15px;
+                float: left;
+                color: black;
+                text-align: center;
+                cursor: Pointer;
+            }
+            #levelarea{
+                width: 850px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         </style>
     </head>
     <body>
         <div id="main"></div>
         <script>
-            const roma = ['I','II','III','IV'];
+            const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
             var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
             var lvl = 1;
+            var maxlvl = 1;
             var size = 9;
             var bombs = [10, 0];
             var cap = [false];
@@ -197,33 +250,48 @@
                 <div id="con">
                     <div class="huge" style="text-align: center; margin: 20px;">Minesweeper</div>
                     <div class="space2"></div>
-                    <input type="button" class="startbutton" value="Start" onclick="level(0)">
+                    <input type="button" class="startbutton" value="Start" onclick="levelmenu()">
                 </div>`;
                 }
+            function levelmenu(){
+                let val = `<div id="con">
+                    <div class='space'></div>
+                    <div style='text-align: center' class='huge'>Select level</div>
+                    <div class='space2'></div>
+                    <div id='levelarea'>`
+                for(let i=1;i<16;i++){
+                    if(i < maxlvl){val += `<div class='completed' onclick='level(${i})'>${i}</div>`}
+                    else if(i == maxlvl){val += `<div class='unlocked' onclick='level(${i})'>${i}</div>`}
+                    else{val += `<div class='locked'></div>`}
+                    if(i%5==0){val+=`<div style='clear: both;'></div>`}
+                }
+                val += `</div></div>`
+                document.getElementById("main").innerHTML=`${val}`;
+            }
             function level(x){
                 value = 100;
-                lvl += x
+                lvl = x;
                 if(lvl==1){
                     ti = 60;
                     inc = 2;
                     a = 8;
-                    b = [6, 0, 0, 0];
+                    b = [6, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
                 else if(lvl==2){
                     ti = 90;
-                    inc = 1.5;
+                    inc = 1.6;
                     a = 10;
-                    b = [10, 0, 0, 0];
+                    b = [10, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
                 else if(lvl==3){
                     ti = 120;
-                    inc = 1.1;
+                    inc = 1.2;
                     a = 12;
-                    b = [15, 0, 0, 0];
+                    b = [15, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
@@ -231,23 +299,103 @@
                     ti = 150;
                     inc = 0.8;
                     a = 14;
-                    b = [22, 0, 0, 0];
+                    b = [22, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
                 else if(lvl==5){
                     ti = 180;
-                    inc = 0.6;
+                    inc = 0.5;
                     a = 16;
-                    b = [30, 0, 0, 0];
+                    b = [30, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
                 else if(lvl==6){
                     ti = 180;
-                    inc = 0.6;
+                    inc = 0.5;
                     a = 16;
-                    b = [24, 6, 0, 0];
+                    b = [24, 6, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==7){
+                    ti = 180;
+                    inc = 0.5;
+                    a = 16;
+                    b = [16, 16, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==8){
+                    ti = 180;
+                    inc = 0.5;
+                    a = 16;
+                    b = [32, 0, 0, 0, 0];
+                    c = [true, 4];
+                    ar = 'basic';
+                }
+                else if(lvl==9){
+                    ti = 10;
+                    inc = 5;
+                    a = 12;
+                    b = [18, 0, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==10){
+                    ti = 240;
+                    inc = 0.5;
+                    a = 16;
+                    b = [15, 10, 5, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==11){
+                    ti = 180;
+                    inc = 0.5;
+                    a = 16;
+                    b = [48, 0, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==12){
+                    ti = 240;
+                    inc = 0.3;
+                    a = 18;
+                    b = [36, 18, 0, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==13){
+                    ti = 240;
+                    inc = 0.3;
+                    a = 18;
+                    b = [25, 25, 0, 0, 0];
+                    c = [true, 3, 3];
+                    ar = 'basic';
+                }
+                else if(lvl==14){
+                    ti = 240;
+                    inc = 0.3;
+                    a = 18;
+                    b = [0, 30, 20, 0, 0];
+                    c = [false];
+                    ar = 'basic';
+                }
+                else if(lvl==15){
+                    ti = 300;
+                    inc = 0.3;
+                    a = 18;
+                    b = [56, 0, 0, 0, 0];
+                    c = [false];
+                    ar = 'knight';
+                }
+                else{
+                    ti = 60;
+                    inc = 2;
+                    a = 8;
+                    b = [6, 0, 0, 0, 0];
                     c = [false];
                     ar = 'basic';
                 }
@@ -281,6 +429,8 @@
                         }
                     }
                 }
+                if(b[4]>0 && c[0]==false){val += `<div class='med'>Anti Bombs: ${b[4]}</div><div class='space'></div>`}
+                else if(b[4]>0 && c[0]==true){val += `<div class='med'>Anti Bombs: ???</div><div class='space'></div>`}
                 document.getElementById('bombtypes').innerHTML=val;    
             }
             function generate(ti, inc, a, b, ar){
@@ -426,7 +576,8 @@
                         for(i=bombs.length-1;bombs[i]<=0;i--){
                             bombs.splice(i, 1)
                         }
-                        mainlist[a][2] = bombs.length;
+                        if(bombs.length<=4){mainlist[a][2] = bombs.length;}
+                        else{mainlist[a][2] = -1;}
                         bombs[bombs.length-1]--;
                         bomblist.push(a);
                     }
@@ -434,7 +585,7 @@
             }
             function flag(x){
                 function nextflag(y){
-                    if(y==5){
+                    if(y==6){
                         document.getElementById(`a${x}`).innerHTML='<div class="unchecked"></div>';
                         mainlist[x][1] = 0;
                     }
@@ -450,8 +601,8 @@
                 if(mainlist[x][1]==0){y = 1;}
                 else{y = mainlist[x][1];}
                 if(mainlist[x][1]!=1){
-                    for(i=y;i<=5;i++){
-                        if(flagallow[i%5]==true){
+                    for(i=y;i<=6;i++){
+                        if(flagallow[i%6]==true){
                             nextflag(i);
                             break;
                         }
@@ -467,22 +618,26 @@
                     interval = setInterval(time, 100);
                 }
                 var count = 0
+                var ncount = 0
                 if(mainlist[x][1] != 1){
                     for(i=0;i<bomblist.length;i++){
                         if(x==bomblist[i]){count+=100;}
                         else{
                             for(j=0;j<area.length;j++){
-                                if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){count+=mainlist[bomblist[i]][2];}
+                                if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){
+                                    if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
+                                    else{ncount-=mainlist[bomblist[i]][2]}
+                                }
                             }
                         }
                     }
                     mainlist[x][1] = 1;
-                    if(count==0){
+                    if(count==0 && ncount==0){
                         for(let i=0; i<area.length; i++){
                             if(checkarea(x, i)){checknext.push(x+area[i][0]+size*area[i][1])}
                         }
                     }
-                    changevalue(x, count);
+                    changevalue(x, count, ncount);
                     bonus();
                 }
                 next();
@@ -516,25 +671,30 @@
                     }
                 }
             }
-            function changevalue(x, count){
-                if(count>99){lose();}
-                else if(count == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
-                else if(count == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #1976d2;'>${count}</div>`;}
-                else if(count == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #388e3c;'>${count}</div>`;}
-                else if(count == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #d32f2f;'>${count}</div>`;}
-                else if(count == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #7b1fa2;'>${count}</div>`;}
-                else if(count == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #910000;'>${count}</div>`;}
-                else if(count == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #4CA1A1;'>${count}</div>`;}
-                else if(count == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #964600;'>${count}</div>`;}
-                else if(count == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #616161;'>${count}</div>`;}
-                else if(count == 9){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #0800A8;'>${count}</div>`;}
-                else if(count == 10){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004212;'>${count}</div>`;}
-                else if(count == 11){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #99004A;'>${count}</div>`;}
-                else if(count == 12){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #400032;'>${count}</div>`;}
-                else if(count == 13){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #692A2A;'>${count}</div>`;}
-                else if(count == 14){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004A59;'>${count}</div>`;}
-                else if(count == 15){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #383838;'>${count}</div>`;}
-                else if(count >= 16){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #000;'>${count}</div>`;}
+            function changevalue(x, count, ncount){
+                if(count>91){lose();}
+                else if(count == 0 && ncount == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
+                else if(count - ncount <= -4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #C103C7;'>${count - ncount}</div>`;}
+                else if(count - ncount == -3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #C79303;'>${count - ncount}</div>`;}
+                else if(count - ncount == -2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #03C765;'>${count - ncount}</div>`;}
+                else if(count - ncount == -1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #18A9AE;'>${count - ncount}</div>`;}
+                else if(count - ncount == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #8ABFA4;'>${count - ncount}</div>`;}
+                else if(count - ncount == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #1976d2;'>${count - ncount}</div>`;}
+                else if(count - ncount == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #388e3c;'>${count - ncount}</div>`;}
+                else if(count - ncount == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #d32f2f;'>${count - ncount}</div>`;}
+                else if(count - ncount == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #7b1fa2;'>${count - ncount}</div>`;}
+                else if(count - ncount == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #910000;'>${count - ncount}</div>`;}
+                else if(count - ncount == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #4CA1A1;'>${count - ncount}</div>`;}
+                else if(count - ncount == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #964600;'>${count - ncount}</div>`;}
+                else if(count - ncount == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #616161;'>${count - ncount}</div>`;}
+                else if(count - ncount == 9){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #0800A8;'>${count - ncount}</div>`;}
+                else if(count - ncount == 10){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004212;'>${count - ncount}</div>`;}
+                else if(count - ncount == 11){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #99004A;'>${count - ncount}</div>`;}
+                else if(count - ncount == 12){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #400032;'>${count - ncount}</div>`;}
+                else if(count - ncount == 13){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #692A2A;'>${count - ncount}</div>`;}
+                else if(count - ncount == 14){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004A59;'>${count - ncount}</div>`;}
+                else if(count - ncount == 15){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #383838;'>${count - ncount}</div>`;}
+                else if(count - ncount >= 16){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #000;'>${count - ncount}</div>`;}
                 else{document.getElementById(`a${x}`).innerHTML=`<div class="checked">${count}</div>`;}
             }
             function flagcount(x){
@@ -566,12 +726,13 @@
                     <div class="space"></div>
                     <div class="big" style="color: red; text-align: center; word-wrap: break-word;" id="failtext">Failed</div>
                     <div class="space"></div>
-                    <input class="checker" value="Try Again" type="button" id="fail" onclick="level(0)">
+                    <input class="checker" value="Try Again" type="button" id="fail" onclick="level(${lvl})">
                     <div class="space"></div>
-                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="start()">
+                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="levelmenu()">
                     </div>`
             }
             function win(){
+                if(lvl==maxlvl){maxlvl++;}
                 clearInterval(interval);
                 document.getElementById('main').innerHTML=`
                     <div id="con">
@@ -579,11 +740,11 @@
                     <div class="space"></div>
                     <div class="big" style="color: lime; text-align: center; word-wrap: break-word;" id="failtext">Win</div>
                     <div class="space"></div>
-                    <input class="checker" value="Next Level" type="button" id="next" onclick="level(1)">
+                    <input class="checker" value="Next Level" type="button" id="next" onclick="level(${lvl + 1})">
                     <div class="space"></div>
-                    <input class="checker" value="Replay" type="button" id="menu" onclick="level(0)">
+                    <input class="checker" value="Replay" type="button" id="menu" onclick="level(${lvl})">
                     <div class="space"></div>
-                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="start()">
+                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="levelmenu()">
                     </div>`
             }
             start();
