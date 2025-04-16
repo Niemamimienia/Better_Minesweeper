@@ -245,6 +245,8 @@
             var checklist = [];
             var checknext = [];
             var flagallow = [];
+            const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
+            const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
             function start(){
                 document.getElementById("main").innerHTML =`
                 <div id="con">
@@ -674,28 +676,14 @@
             function changevalue(x, count, ncount){
                 if(count>91){lose();}
                 else if(count == 0 && ncount == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
-                else if(count - ncount <= -4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #C103C7;'>${count - ncount}</div>`;}
-                else if(count - ncount == -3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #C79303;'>${count - ncount}</div>`;}
-                else if(count - ncount == -2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #03C765;'>${count - ncount}</div>`;}
-                else if(count - ncount == -1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #18A9AE;'>${count - ncount}</div>`;}
-                else if(count - ncount == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #8ABFA4;'>${count - ncount}</div>`;}
-                else if(count - ncount == 1){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #1976d2;'>${count - ncount}</div>`;}
-                else if(count - ncount == 2){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #388e3c;'>${count - ncount}</div>`;}
-                else if(count - ncount == 3){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #d32f2f;'>${count - ncount}</div>`;}
-                else if(count - ncount == 4){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #7b1fa2;'>${count - ncount}</div>`;}
-                else if(count - ncount == 5){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #910000;'>${count - ncount}</div>`;}
-                else if(count - ncount == 6){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #4CA1A1;'>${count - ncount}</div>`;}
-                else if(count - ncount == 7){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #964600;'>${count - ncount}</div>`;}
-                else if(count - ncount == 8){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #616161;'>${count - ncount}</div>`;}
-                else if(count - ncount == 9){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #0800A8;'>${count - ncount}</div>`;}
-                else if(count - ncount == 10){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004212;'>${count - ncount}</div>`;}
-                else if(count - ncount == 11){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #99004A;'>${count - ncount}</div>`;}
-                else if(count - ncount == 12){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #400032;'>${count - ncount}</div>`;}
-                else if(count - ncount == 13){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #692A2A;'>${count - ncount}</div>`;}
-                else if(count - ncount == 14){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #004A59;'>${count - ncount}</div>`;}
-                else if(count - ncount == 15){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #383838;'>${count - ncount}</div>`;}
-                else if(count - ncount >= 16){document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: #000;'>${count - ncount}</div>`;}
-                else{document.getElementById(`a${x}`).innerHTML=`<div class="checked">${count}</div>`;}
+                else{
+                    if(count - ncount > 0){
+                        {document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: ${colorlist[Math.min(count - ncount -1, colorlist.length -1)]};'>${count - ncount}</div>`;}
+                    }
+                    else if(count - ncount <= 0){
+                        {document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: ${ncolorlist[Math.min(ncount - count, ncolorlist.length -1)]};'>${count - ncount}</div>`;}
+                    }
+                }
             }
             function flagcount(x){
                 let flags = 0;
