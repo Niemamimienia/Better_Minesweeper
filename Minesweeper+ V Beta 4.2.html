@@ -247,6 +247,23 @@
             var flagallow = [];
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
+            const levellist = [
+                [60, 3, 8, [8, 0, 0, 0, 0], [false], 'basic'], //lvl 1
+                [90, 2, 10, [12, 0, 0, 0, 0], [false], 'basic'], //lvl 2
+                [120, 1.5, 12, [18, 0, 0, 0, 0], [false], 'basic'], //lvl 3
+                [120, 1.5, 12, [14, 4, 0, 0, 0], [false], 'basic'], //lvl 4
+                [120, 1.5, 12, [9, 9, 0, 0, 0], [false], 'basic'], //lvl 5
+                [120, 1.5, 12, [20, 0, 0, 0, 0], [true, 2], 'basic'], //lvl 6
+                [180, 1, 14, [28, 0, 0, 0, 0], [false], 'basic'], //lvl 7
+                [180, 1, 14, [16, 12, 0, 0, 0], [false], 'basic'], //lvl 8
+                [210, 1, 14, [15, 10, 5, 0, 0], [false], 'basic'], //lvl 9
+                [5, 5, 10, [15, 0, 0, 0, 0], [false], 'basic'], //lvl 10
+                [240, 1.2, 14, [25, 0, 0, 0, 5], [false], 'basic'], //lvl 11
+                [180, 1, 14, [10, 10, 10, 0, 0], [true, 1, 1, 1], 'basic'], //lvl 12
+                [240, 1.2, 14, [16, 12, 0, 0, 4], [false], 'basic'], //lvl 13
+                [180, 1, 14, [0, 15, 15, 0, 0], [false], 'basic'], //lvl 14
+                [300, 2, 14, [30, 0, 0, 0, 0], [false], 'knight'] //lvl 15
+            ]
             function start(){
                 document.getElementById("main").innerHTML =`
                 <div id="con">
@@ -273,133 +290,21 @@
             function level(x){
                 value = 100;
                 lvl = x;
-                if(lvl==1){
-                    ti = 60;
-                    inc = 2;
-                    a = 8;
-                    b = [6, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==2){
-                    ti = 90;
-                    inc = 1.6;
-                    a = 10;
-                    b = [10, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==3){
-                    ti = 120;
-                    inc = 1.2;
-                    a = 12;
-                    b = [15, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==4){
-                    ti = 150;
-                    inc = 0.8;
-                    a = 14;
-                    b = [22, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==5){
-                    ti = 180;
-                    inc = 0.5;
-                    a = 16;
-                    b = [30, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==6){
-                    ti = 180;
-                    inc = 0.5;
-                    a = 16;
-                    b = [24, 6, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==7){
-                    ti = 180;
-                    inc = 0.5;
-                    a = 16;
-                    b = [16, 16, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==8){
-                    ti = 180;
-                    inc = 0.5;
-                    a = 16;
-                    b = [32, 0, 0, 0, 0];
-                    c = [true, 4];
-                    ar = 'basic';
-                }
-                else if(lvl==9){
-                    ti = 10;
-                    inc = 5;
-                    a = 12;
-                    b = [18, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==10){
-                    ti = 240;
-                    inc = 0.5;
-                    a = 16;
-                    b = [15, 10, 5, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==11){
-                    ti = 180;
-                    inc = 0.5;
-                    a = 16;
-                    b = [48, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==12){
-                    ti = 240;
-                    inc = 0.3;
-                    a = 18;
-                    b = [36, 18, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==13){
-                    ti = 240;
-                    inc = 0.3;
-                    a = 18;
-                    b = [25, 25, 0, 0, 0];
-                    c = [true, 3, 3];
-                    ar = 'basic';
-                }
-                else if(lvl==14){
-                    ti = 240;
-                    inc = 0.3;
-                    a = 18;
-                    b = [0, 30, 20, 0, 0];
-                    c = [false];
-                    ar = 'basic';
-                }
-                else if(lvl==15){
-                    ti = 300;
-                    inc = 0.3;
-                    a = 18;
-                    b = [56, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'knight';
+                if(lvl<=levellist.length){
+                    ti = levellist[lvl-1][0];
+                    inc = levellist[lvl-1][1];
+                    a = levellist[lvl-1][2];
+                    b = [...levellist[lvl-1][3]];
+                    c = [...levellist[lvl-1][4]];
+                    ar = levellist[lvl-1][5];
                 }
                 else{
-                    ti = 60;
-                    inc = 2;
-                    a = 8;
-                    b = [6, 0, 0, 0, 0];
-                    c = [false];
-                    ar = 'basic';
+                    ti = levellist[levellist.length-1][0];
+                    inc = levellist[levellist.length-1][1];
+                    a = levellist[levellist.length-1][2];
+                    b = [...levellist[levellist.length-1][3]];
+                    c = [...levellist[levellist.length-1][4]];
+                    ar = levellist[levellist.length-1][5];
                 }
                 info(ti, inc, a, b, c, ar)
             }
