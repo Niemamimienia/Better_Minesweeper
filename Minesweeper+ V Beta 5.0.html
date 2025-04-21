@@ -173,10 +173,23 @@
                 background-color: #00939d;
                 height: 100%;
             }
+            .pointer{
+                width: 60px;
+                height: 60px;
+                font-size: 50px;
+                font-weight: 700;
+                border-radius: 15px;
+                border: 10px rgb(0, 148, 37) solid;
+                background-color: rgb(162, 201, 173);
+                margin: 15px;
+                color: black;
+                text-align: center;
+                cursor: Pointer;
+            }
             .locked{
                 width: 120px;
                 height: 120px;
-                font-size: 90px;
+                font-size: 85px;
                 font-weight: 700;
                 border-radius: 30px;
                 border: 10px gray solid;
@@ -189,7 +202,7 @@
             .unlocked{
                 width: 120px;
                 height: 120px;
-                font-size: 90px;
+                font-size: 85px;
                 font-weight: 700;
                 border-radius: 30px;
                 border: 10px rgb(0, 148, 37) solid;
@@ -203,7 +216,7 @@
             .completed{
                 width: 120px;
                 height: 120px;
-                font-size: 90px;
+                font-size: 85px;
                 font-weight: 700;
                 border-radius: 30px;
                 border: 10px rgb(7, 133, 150) solid;
@@ -215,9 +228,15 @@
                 cursor: Pointer;
             }
             #levelarea{
-                width: 850px;
                 margin-left: auto;
                 margin-right: auto;
+                width: 1050px;
+            }
+            .coc{
+                width: 100%;
+                height: 100%;
+                background-color: #e3bd00;
+                color: black;
             }
         </style>
     </head>
@@ -226,6 +245,7 @@
         <script>
             const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
+            const pages = 2;
             var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
             var lvl = 1;
             var maxlvl = 1;
@@ -245,24 +265,40 @@
             var checklist = [];
             var checknext = [];
             var flagallow = [];
+            var cockroach = false;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
             const levellist = [
-                [60, 3, 8, [8, 0, 0, 0, 0], [false], 'basic'], //lvl 1
-                [90, 2, 10, [12, 0, 0, 0, 0], [false], 'basic'], //lvl 2
-                [120, 1.5, 12, [18, 0, 0, 0, 0], [false], 'basic'], //lvl 3
-                [120, 1.5, 12, [14, 4, 0, 0, 0], [false], 'basic'], //lvl 4
-                [120, 1.5, 12, [9, 9, 0, 0, 0], [false], 'basic'], //lvl 5
-                [120, 1.5, 12, [20, 0, 0, 0, 0], [true, 2], 'basic'], //lvl 6
-                [180, 1, 14, [28, 0, 0, 0, 0], [false], 'basic'], //lvl 7
-                [180, 1, 14, [16, 12, 0, 0, 0], [false], 'basic'], //lvl 8
-                [210, 1, 14, [15, 10, 5, 0, 0], [false], 'basic'], //lvl 9
-                [5, 5, 10, [15, 0, 0, 0, 0], [false], 'basic'], //lvl 10
-                [240, 1.2, 14, [25, 0, 0, 0, 5], [false], 'basic'], //lvl 11
-                [180, 1, 14, [10, 10, 10, 0, 0], [true, 1, 1, 1], 'basic'], //lvl 12
-                [240, 1.2, 14, [16, 12, 0, 0, 4], [false], 'basic'], //lvl 13
-                [180, 1, 14, [0, 15, 15, 0, 0], [false], 'basic'], //lvl 14
-                [300, 2, 14, [30, 0, 0, 0, 0], [false], 'knight'] //lvl 15
+                [60, 3, 8, [8, 0, 0, 0, 0], [false], 'basic', false], //lvl 1
+                [90, 2, 10, [12, 0, 0, 0, 0], [false], 'basic', false], //lvl 2
+                [120, 1.5, 12, [18, 0, 0, 0, 0], [false], 'basic', false], //lvl 3
+                [120, 1.5, 12, [14, 4, 0, 0, 0], [false], 'basic', false], //lvl 4
+                [120, 1.5, 12, [9, 9, 0, 0, 0], [false], 'basic', false], //lvl 5
+                [120, 1.5, 12, [20, 0, 0, 0, 0], [true, 2], 'basic', false], //lvl 6
+                [180, 1, 14, [28, 0, 0, 0, 0], [false], 'basic', false], //lvl 7
+                [180, 1, 14, [16, 12, 0, 0, 0], [false], 'basic', false], //lvl 8
+                [210, 1, 14, [15, 10, 5, 0, 0], [false], 'basic', false], //lvl 9
+                [5, 5, 10, [15, 0, 0, 0, 0], [false], 'basic', false], //lvl 10
+                [210, 1, 14, [25, 0, 7, 0, 0], [false], 'basic', false], //lvl 11
+                [180, 1, 14, [10, 10, 10, 0, 0], [true, 1, 1, 1], 'basic', false], //lvl 12
+                [180, 1, 14, [6, 12, 15, 0, 0], [false], 'basic', false], //lvl 13
+                [180, 1, 14, [0, 16, 16, 0, 0], [false], 'basic', false], //lvl 14
+                [300, 2.5, 14, [30, 0, 0, 0, 0], [false], 'knight', false], //lvl 15
+                [240, 0.8, 16, [42, 0, 0, 0, 0], [false], 'basic', false], //lvl 16
+                [240, 0.8, 16, [16, 16, 10, 0, 0], [false], 'basic', false], //lvl 17
+                [300, 0.8, 16, [35, 0, 0, 0, 5], [false], 'basic', false], //lvl 18
+                [240, 0.8, 16, [14, 14, 14, 0, 0], [true, 1, 1, 1], 'basic', false], //lvl 19
+                [360, 2, 16, [32, 8, 0, 0, 0], [false], 'knight', false], //lvl 20
+                [300, 0.8, 16, [28, 0, 0, 0, 14], [false], 'basic', false], //lvl 21
+                [360, 2, 16, [20, 20, 0, 0, 0], [true, 2, 2], 'knight', false], //lvl 22
+                [300, 0.8, 16, [16, 16, 0, 0, 8], [false], 'basic', false], //lvl 23
+                [10, 2.5, 12, [18, 6, 0, 0, 0], [false], 'basic', false], //lvl 24
+                [420, 2, 16, [30, 0, 0, 0, 10], [false], 'knight', false], //lvl 25
+                [300, 2, 14, [25, 0, 0, 0, 0], [false], 'basic', true], //lvl 26
+                [300, 0.8, 16, [15, 15, 10, 0, 3], [false], 'basic', false], //lvl 27
+                [25, 25, 12, [18, 0, 0, 0, 0], [true, 4], 'knight', false], //lvl 28
+                [420, 1.5, 16, [35, 0, 0, 0, 0], [true, 2], 'basic', true], //lvl 29
+                [480, 2, 16, [10, 10, 10, 0, 10], [true, 1, 1, 1, 0, 1], 'knight', false] //lvl 30
             ]
             function start(){
                 document.getElementById("main").innerHTML =`
@@ -277,15 +313,39 @@
                     <div class='space'></div>
                     <div style='text-align: center' class='huge'>Select level</div>
                     <div class='space2'></div>
-                    <div id='levelarea'>`
-                for(let i=1;i<16;i++){
-                    if(i < maxlvl){val += `<div class='completed' onclick='level(${i})'>${i}</div>`}
-                    else if(i == maxlvl){val += `<div class='unlocked' onclick='level(${i})'>${i}</div>`}
-                    else{val += `<div class='locked'></div>`}
-                    if(i%5==0){val+=`<div style='clear: both;'></div>`}
-                }
-                val += `</div></div>`
+                    <div id='levelarea'>
+                        <div id='left' style='min-height: 500px; width: 100px; float: left;'></div>
+                        <div id='center' style='min-height: 500px; width: 850px; float: left;'></div>
+                        <div id='right' style='min-height: 500px; width: 100px; float: left;'></div>
+                    </div>
+                    </div>`
                 document.getElementById("main").innerHTML=`${val}`;
+
+                function menugen(a){
+                val=``;
+                    for(let i=1+a*15;i<16+a*15;i++){
+                        if(i < maxlvl){val += `<div class='completed' onclick='level(${i})'>${i}</div>`}
+                        else if(i == maxlvl){val += `<div class='unlocked' onclick='level(${i})'>${i}</div>`}
+                        else{val += `<div class='locked'></div>`}
+                        if(i%5==0){val+=`<div style='clear: both;'></div>`}
+                    }
+                    document.getElementById("center").innerHTML=`${val}`;
+                    if(a>0){
+                        document.getElementById('left').innerHTML=`<div class='space4'></div><div class='pointer' id='l'><</div>`;
+                        document.getElementById(`l`).addEventListener('click', () => menugen(a-1));
+                    }
+                    else{
+                        document.getElementById('left').innerHTML='';
+                    }
+                    if(a<pages-1){
+                        document.getElementById('right').innerHTML=`<div class='space4'></div><div class='pointer' id='r'>></div>`;
+                        document.getElementById(`r`).addEventListener('click', () => menugen(a+1));
+                    }
+                    else{
+                        document.getElementById('right').innerHTML='';
+                    }
+                }    
+                menugen(0);
             }
             function level(x){
                 value = 100;
@@ -297,6 +357,7 @@
                     b = [...levellist[lvl-1][3]];
                     c = [...levellist[lvl-1][4]];
                     ar = levellist[lvl-1][5];
+                    coc = levellist[lvl-1][6];
                 }
                 else{
                     ti = levellist[levellist.length-1][0];
@@ -305,25 +366,19 @@
                     b = [...levellist[levellist.length-1][3]];
                     c = [...levellist[levellist.length-1][4]];
                     ar = levellist[levellist.length-1][5];
+                    coc = levellist[levellist.length-1][6];
                 }
-                info(ti, inc, a, b, c, ar)
+                info(ti, inc, a, b, c, ar, coc)
             }
-            function info(ti, inc, a, b, c, ar){
+            function info(ti, inc, a, b, c, ar, coc){
                 let val = ''
                 document.getElementById('main').innerHTML=`
-                    <div id='con' style='text-align: center;'>
-                        <div class='space'></div>
+                    <div id='con' style='text-align: center;'></div>`
+                val += `<div class='space'></div>
                         <div class='big'>Level ${lvl}</div>
                         <div class='space2'></div>
                         <div class='med'>Board Size: ${a} x ${a}</div>
-                        <div class='space'></div>
-                        <div id='bombtypes' class='med'></div>
-                        <div class='med'>Time: ${ti} + ${inc} sec </div>
-                        <div class='space'></div>
-                        <div class='med'>Number Showing: ${ar} </div>
-                        <div class='space'></div>
-                        <input class="checker" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, ar)">
-                    </div>`
+                        <div class='space'></div>`;
                 for(i=-1;i<multi.length;i++){
                     if(b[i+1]>0){
                         if(i<0){
@@ -338,12 +393,19 @@
                 }
                 if(b[4]>0 && c[0]==false){val += `<div class='med'>Anti Bombs: ${b[4]}</div><div class='space'></div>`}
                 else if(b[4]>0 && c[0]==true){val += `<div class='med'>Anti Bombs: ???</div><div class='space'></div>`}
-                document.getElementById('bombtypes').innerHTML=val;    
+                val += `<div class='med'>Time: ${ti} + ${inc} sec </div>
+                        <div class='space'></div>
+                        <div class='med'>Number Showing: ${ar} </div>
+                        <div class='space'></div>`;
+                if(coc == true){val += `<div class='med'>Cockroach modifier</div><div class='space'></div>`}
+                val += `<input class="checker" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
+                document.getElementById('con').innerHTML=val;    
             }
-            function generate(ti, inc, a, b, ar){
+            function generate(ti, inc, a, b, c, ar, coc){
                 size = a;
                 bombs = b;
                 cap = c;
+                cockroach = coc;
                 if(cap[0]==true){
                     for(i=1;i<cap.length;i++){
                         bombs[i-1] += Math.floor(Math.random()*(cap[i]+1));
@@ -417,7 +479,7 @@
                         if(flagallow[i]==true){flagcount(i);}
                     }
                 for(let i=1;i<=size*size;i++){
-                    document.getElementById(`a${i}`).addEventListener('click', () => check(i));
+                    document.getElementById(`a${i}`).addEventListener('click', () => control(i));
                     document.getElementById(`a${i}`).addEventListener('contextmenu', (event) => {
                     event.preventDefault(); 
                     flag(i);
@@ -519,35 +581,47 @@
                     if(flagallow[i]==true){flagcount(i);}
                 }
             }
-            function check(x){
+            function control(x){
+                if(cockroach!=false && mainlist[x][1] != 1){
+                    if(cockroach!=true){cockroachmove(x);}
+                    else{cockroach = x;}
+                }
                 if(bomblist.length == 0){
                     bomb(x);
                     interval = setInterval(time, 100);
                 }
+                if(mainlist[x][1] != 1){
+                    check(x);
+                }
+            }
+            function check(x){
+                if(mainlist[x][1] != 1){
+                    change(x);
+                }
+                next();
+            }
+            function change(x){
                 var count = 0
                 var ncount = 0
-                if(mainlist[x][1] != 1){
-                    for(i=0;i<bomblist.length;i++){
-                        if(x==bomblist[i]){count+=100;}
-                        else{
-                            for(j=0;j<area.length;j++){
-                                if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){
-                                    if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
-                                    else{ncount-=mainlist[bomblist[i]][2]}
-                                }
+                for(i=0;i<bomblist.length;i++){
+                    if(x==bomblist[i]){count+=100;}
+                    else{
+                        for(j=0;j<area.length;j++){
+                            if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){
+                                if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
+                                else{ncount-=mainlist[bomblist[i]][2]}
                             }
                         }
                     }
-                    mainlist[x][1] = 1;
-                    if(count==0 && ncount==0){
-                        for(let i=0; i<area.length; i++){
-                            if(checkarea(x, i)){checknext.push(x+area[i][0]+size*area[i][1])}
-                        }
-                    }
-                    changevalue(x, count, ncount);
-                    bonus();
                 }
-                next();
+                mainlist[x][1] = 1;
+                if(count==0 && ncount==0){
+                    for(let i=0; i<area.length; i++){
+                        if(checkarea(x, i)){checknext.push(x+area[i][0]+size*area[i][1])}
+                    }
+                }
+                changevalue(x, count, ncount);
+                bonus();
             }
             function checkarea(x, y){
                 var allow = true;
@@ -589,6 +663,9 @@
                         {document.getElementById(`a${x}`).innerHTML=`<div class="checked" style='color: ${ncolorlist[Math.min(ncount - count, ncolorlist.length -1)]};'>${count - ncount}</div>`;}
                     }
                 }
+                if(cockroach == x){
+                    {document.getElementById(`a${x}`).innerHTML=`<div class="coc" style='color: black;'>*</div>`;}
+                }
             }
             function flagcount(x){
                 let flags = 0;
@@ -610,6 +687,15 @@
                 }
                 if(cap[0]==false){document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;}
                 else{document.getElementById('placecounter').innerHTML='Places: '+place+' / ???'}
+            }
+            function cockroachmove(x){
+                let a = cockroach;
+                if((x-1)%size>(cockroach-1)%size){cockroach++;}
+                else if((x-1)%size<(cockroach-1)%size){cockroach--;}
+                if(Math.floor((x-1)/size)>Math.floor((cockroach-1)/size)){cockroach+=size;}
+                else if(Math.floor((x-1)/size)<Math.floor((cockroach-1)/size)){cockroach-=size;}
+                change(a);
+                change(cockroach);
             }
             function lose(){
                 clearInterval(interval);
