@@ -98,6 +98,10 @@
                 height: 100%;
                 cursor: Pointer;
                 background-color: #aaa;
+                transition: 0.1s all ease-in-out;
+            }
+            .unchecked:hover{
+                background-color: #bbb;
             }
             .checked{
                 width: 100%;
@@ -109,30 +113,50 @@
                 height: 100%;
                 background-color: #fb6060;
                 color: black;
+                transition: 0.1s all ease-in-out;
+            }
+            .flaged1:hover{
+                background-color: #ff7e7e;
             }
             .flaged2{
                 width: 100%;
                 height: 100%;
                 background-color: #e70303;
                 color: black;
+                transition: 0.1s all ease-in-out;
+            }
+            .flaged2:hover{
+                background-color: #ff2b2b;
             }
             .flaged3{
                 width: 100%;
                 height: 100%;
                 background-color: #ac0000;
                 color: black;
+                transition: 0.1s all ease-in-out;
+            }
+            .flaged3:hover{
+                background-color: #bf3030;
             }
             .flaged4{
                 width: 100%;
                 height: 100%;
                 background-color: #6d0000;
                 color: black;
+                transition: 0.1s all ease-in-out;
+            }
+            .flaged4:hover{
+                background-color: #830f0f;
             }
             .flaged5{
                 width: 100%;
                 height: 100%;
                 background-color: #00d8e3;
                 color: black;
+                transition: 0.1s all ease-in-out;
+            }
+            .flaged5:hover{
+                background-color: #2ff5ff;
             }
             #border{
                 margin: 30px;
@@ -185,6 +209,14 @@
                 color: black;
                 text-align: center;
                 cursor: Pointer;
+                transition: 0.2s all ease-in-out;
+            }
+            .pointer:hover{
+                width: 56px;
+                height: 56px;
+                border-radius: 14px;
+                margin: 17px;
+                border: 10px rgb(0, 196, 49) solid;
             }
             .locked{
                 width: 120px;
@@ -212,6 +244,14 @@
                 color: black;
                 text-align: center;
                 cursor: Pointer;
+                transition: 0.2s all ease-in-out;
+            }
+            .unlocked:hover{
+                width: 114px;
+                height: 114px;
+                border-radius: 28px;
+                margin: 18px;
+                border: 10px rgb(0, 196, 49) solid;
             }
             .completed{
                 width: 120px;
@@ -226,6 +266,14 @@
                 color: black;
                 text-align: center;
                 cursor: Pointer;
+                transition: 0.2s all ease-in-out;
+            }
+            .completed:hover{
+                width: 114px;
+                height: 114px;
+                border-radius: 28px;
+                margin: 18px;
+                border: 10px rgb(11, 160, 180) solid;
             }
             #levelarea{
                 margin-left: auto;
@@ -337,7 +385,7 @@
                     else{
                         document.getElementById('left').innerHTML='';
                     }
-                    if(a<pages-1){
+                    if(a<pages-1 && Math.floor((maxlvl-1)/15) > a){
                         document.getElementById('right').innerHTML=`<div class='space4'></div><div class='pointer' id='r'>></div>`;
                         document.getElementById(`r`).addEventListener('click', () => menugen(a+1));
                     }
@@ -590,7 +638,7 @@
                     bomb(x);
                     interval = setInterval(time, 100);
                 }
-                if(mainlist[x][1] != 1){
+                if(mainlist[x][1] == 0){
                     check(x);
                 }
             }
