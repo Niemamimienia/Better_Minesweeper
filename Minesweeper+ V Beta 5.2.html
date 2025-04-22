@@ -108,52 +108,38 @@
                 height: 100%;
                 background-color: #ddd;
             }
-            .flaged1{
+            .flaged{
                 width: 100%;
                 height: 100%;
-                background-color: #fb6060;
                 color: black;
                 transition: 0.1s all ease-in-out;
+            }
+            .flaged1{
+                background-color: #fb6060;
             }
             .flaged1:hover{
                 background-color: #ff7e7e;
             }
             .flaged2{
-                width: 100%;
-                height: 100%;
                 background-color: #e70303;
-                color: black;
-                transition: 0.1s all ease-in-out;
             }
             .flaged2:hover{
                 background-color: #ff2b2b;
             }
             .flaged3{
-                width: 100%;
-                height: 100%;
                 background-color: #ac0000;
-                color: black;
-                transition: 0.1s all ease-in-out;
             }
             .flaged3:hover{
                 background-color: #bf3030;
             }
             .flaged4{
-                width: 100%;
-                height: 100%;
                 background-color: #6d0000;
-                color: black;
-                transition: 0.1s all ease-in-out;
             }
             .flaged4:hover{
                 background-color: #830f0f;
             }
             .flaged5{
-                width: 100%;
-                height: 100%;
                 background-color: #00d8e3;
-                color: black;
-                transition: 0.1s all ease-in-out;
             }
             .flaged5:hover{
                 background-color: #2ff5ff;
@@ -218,57 +204,41 @@
                 margin: 17px;
                 border: 10px rgb(0, 196, 49) solid;
             }
-            .locked{
+            .anylevel{
                 width: 120px;
                 height: 120px;
                 font-size: 85px;
                 font-weight: 700;
                 border-radius: 30px;
-                border: 10px gray solid;
-                background-color: lightgray;
                 margin: 15px;
                 float: left;
                 color: black;
                 text-align: center;
             }
-            .unlocked{
-                width: 120px;
-                height: 120px;
-                font-size: 85px;
-                font-weight: 700;
-                border-radius: 30px;
+            .anylevel.locked{
+                border: 10px gray solid;
+                background-color: lightgray;
+            }
+            .anylevel.unlocked{
                 border: 10px rgb(0, 148, 37) solid;
                 background-color: rgb(162, 201, 173);
-                margin: 15px;
-                float: left;
-                color: black;
-                text-align: center;
                 cursor: Pointer;
                 transition: 0.2s all ease-in-out;
             }
-            .unlocked:hover{
+            .anylevel.unlocked:hover{
                 width: 114px;
                 height: 114px;
                 border-radius: 28px;
                 margin: 18px;
                 border: 10px rgb(0, 196, 49) solid;
             }
-            .completed{
-                width: 120px;
-                height: 120px;
-                font-size: 85px;
-                font-weight: 700;
-                border-radius: 30px;
+            .anylevel.completed{
                 border: 10px rgb(7, 133, 150) solid;
                 background-color: rgb(162, 194, 201);
-                margin: 15px;
-                float: left;
-                color: black;
-                text-align: center;
                 cursor: Pointer;
                 transition: 0.2s all ease-in-out;
             }
-            .completed:hover{
+            .anylevel.completed:hover{
                 width: 114px;
                 height: 114px;
                 border-radius: 28px;
@@ -313,6 +283,7 @@
             var checklist = [];
             var checknext = [];
             var flagallow = [];
+            var state = 0;
             var cockroach = false;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
@@ -372,9 +343,9 @@
                 function menugen(a){
                 val=``;
                     for(let i=1+a*15;i<16+a*15;i++){
-                        if(i < maxlvl){val += `<div class='completed' onclick='level(${i})'>${i}</div>`}
-                        else if(i == maxlvl){val += `<div class='unlocked' onclick='level(${i})'>${i}</div>`}
-                        else{val += `<div class='locked'></div>`}
+                        if(i < maxlvl){val += `<div class='anylevel completed' onclick='level(${i})'>${i}</div>`}
+                        else if(i == maxlvl){val += `<div class='anylevel unlocked' onclick='level(${i})'>${i}</div>`}
+                        else{val += `<div class='anylevel locked'></div>`}
                         if(i%5==0){val+=`<div style='clear: both;'></div>`}
                     }
                     document.getElementById("center").innerHTML=`${val}`;
@@ -450,6 +421,7 @@
                 document.getElementById('con').innerHTML=val;    
             }
             function generate(ti, inc, a, b, c, ar, coc){
+                state = 0;
                 size = a;
                 bombs = b;
                 cap = c;
@@ -608,7 +580,7 @@
                     }
                     for(i=0;i<roma.length;i++){
                         if(y==i+1){
-                            document.getElementById(`a${x}`).innerHTML=`<div class='flaged${i+1}'>${roma[i]}</div>`;
+                            document.getElementById(`a${x}`).innerHTML=`<div class='flaged flaged${i+1}'>${roma[i]}</div>`;
                             mainlist[x][1] = i+2;
                             break;
                         }
@@ -691,7 +663,7 @@
                 if(checknext.length>0){
                     var x = checknext[checknext.length-1];
                     checknext.pop();
-                    check(x)
+                    check(x);
                 }
                 else{
                     placecount();
@@ -701,7 +673,7 @@
                 }
             }
             function changevalue(x, count, ncount){
-                if(count>91){lose();}
+                if(count>91){state = 1;}
                 else if(count == 0 && ncount == 0){document.getElementById(`a${x}`).innerHTML=`<div class="checked"></div>`;}
                 else{
                     if(count - ncount > 0){
@@ -730,11 +702,13 @@
                 for(i=0;i<mainlist.length;i++){
                     if(mainlist[i][1] == 1){
                         place++;
-                        if(place>=places){win();}
+                        if(place>=places){state = 2;}
                     }
                 }
                 if(cap[0]==false){document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;}
                 else{document.getElementById('placecounter').innerHTML='Places: '+place+' / ???'}
+                if(state==1){lose();}
+                else if(state==2){win();}
             }
             function cockroachmove(x){
                 let a = cockroach;
