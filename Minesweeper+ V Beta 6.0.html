@@ -264,27 +264,6 @@
             const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
             const pages = 2;
-            var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-            var lvl = 1;
-            var maxlvl = 1;
-            var size = 9;
-            var bombs = [10, 0];
-            var cap = [false];
-            var bombscopy = [10, 0];
-            var bombsum = 10;
-            var places = 0;
-            var value = 100;
-            var t = 500;
-            var inc = 2;
-            var counter = 0;
-            var interval = 0;
-            var mainlist = [];
-            var bomblist = [];
-            var checklist = [];
-            var checknext = [];
-            var flagallow = [];
-            var state = 0;
-            var cockroach = false;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
             const levellist = [
@@ -318,30 +297,67 @@
                 [25, 25, 12, [18, 0, 0, 0, 0], [true, 4], 'knight', false], //lvl 28
                 [420, 1.5, 16, [35, 0, 0, 0, 0], [true, 2], 'basic', true], //lvl 29
                 [480, 2, 16, [10, 10, 10, 0, 10], [true, 1, 1, 1, 0, 1], 'knight', false] //lvl 30
+            ];
+            const modelist = [
+                [999, 99, 9, [10, 0, 0, 0, 0], [false], 'basic', false], 
+                [240, 2, 12, [18, 0, 0, 0, 0], [false], 'basic', false], 
+                [180, 1.5, 15, [24, 12, 0, 0, 0], [false], 'basic', false], 
+                [120, 1, 18, [27, 18, 9, 0, 0], [false], 'basic', true], 
+                [25, 1, 20, [40, 25, 0, 0, 15], [false], 'basic', true]
+            ];
+            const difficulties = ['Casual','Standard','Heavy','Hardcore','Insane'];
+            const buttons = [
+                `<input class="checker" value="Next Level" type="button" id="next" onclick="level(lvl + 1)">`,
+                `<input class="checker" value="Replay" type="button" id="restart" onclick="level(lvl)">`,
+                `<input class="checker" value="Main Menu" type="button" id="mainmenu" onclick="start()">`,
+                `<input class="checker" value="Change Level" type="button" id="menu" onclick="levelmenu(mode)">`,
+                `<input class="checker" value="Try Again" type="button" id="fail" onclick="level(lvl)">`,
+                ``
             ]
+            var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+            var lvl = 1;
+            var maxlvl = 1;
+            var size = 9;
+            var bombs = [10, 0];
+            var cap = [false];
+            var bombscopy = [10, 0];
+            var bombsum = 10;
+            var places = 0;
+            var value = 100;
+            var t = 500;
+            var inc = 2;
+            var counter = 0;
+            var interval = 0;
+            var mainlist = [];
+            var bomblist = [];
+            var checklist = [];
+            var checknext = [];
+            var flagallow = [];
+            var state = 0;
+            var cockroach = false;
+            var mode = 0;
+            var name = '';
             function start(){
                 document.getElementById("main").innerHTML =`
                 <div id="con">
                     <div class="huge" style="text-align: center; margin: 20px;">Minesweeper</div>
                     <div class="space2"></div>
-                    <input type="button" class="startbutton" value="Start" onclick="levelmenu()">
+                    <input type="button" class="startbutton" value="Start" onclick="modes()">
                 </div>`;
                 }
-            function levelmenu(){
-                let val = `<div id="con">
-                    <div class='space'></div>
-                    <div style='text-align: center' class='huge'>Select level</div>
-                    <div class='space2'></div>
-                    <div id='levelarea'>
-                        <div id='left' style='min-height: 500px; width: 100px; float: left;'></div>
-                        <div id='center' style='min-height: 500px; width: 850px; float: left;'></div>
-                        <div id='right' style='min-height: 500px; width: 100px; float: left;'></div>
-                    </div>
-                    </div>`
-                document.getElementById("main").innerHTML=`${val}`;
-
-                function menugen(a){
-                val=``;
+            function modes(){
+                document.getElementById("con").innerHTML =`
+                <div class="huge" style="text-align: center; margin: 20px;">Select mode</div>
+                <div class="space2"></div>
+                <input type="button" class="modebutton" value="Adventure" onclick="levelmenu(0)">
+                <div class="space"></div>
+                <input type="button" class="modebutton" value="Challenges" onclick="levelmenu(1)">`;
+            }
+            function levelmenu(x){
+                let val = '';
+                mode = x;
+                function menugenA(a){
+                    val = '';
                     for(let i=1+a*15;i<16+a*15;i++){
                         if(i < maxlvl){val += `<div class='anylevel completed' onclick='level(${i})'>${i}</div>`}
                         else if(i == maxlvl){val += `<div class='anylevel unlocked' onclick='level(${i})'>${i}</div>`}
@@ -351,54 +367,90 @@
                     document.getElementById("center").innerHTML=`${val}`;
                     if(a>0){
                         document.getElementById('left').innerHTML=`<div class='space4'></div><div class='pointer' id='l'><</div>`;
-                        document.getElementById(`l`).addEventListener('click', () => menugen(a-1));
+                        document.getElementById(`l`).addEventListener('click', () => menugenA(a-1));
                     }
                     else{
                         document.getElementById('left').innerHTML='';
                     }
                     if(a<pages-1 && Math.floor((maxlvl-1)/15) > a){
                         document.getElementById('right').innerHTML=`<div class='space4'></div><div class='pointer' id='r'>></div>`;
-                        document.getElementById(`r`).addEventListener('click', () => menugen(a+1));
+                        document.getElementById(`r`).addEventListener('click', () => menugenA(a+1));
                     }
                     else{
                         document.getElementById('right').innerHTML='';
                     }
                 }    
-                menugen(0);
+                function menugenB(){
+                    val = `<input type='button' class='checker' value='${difficulties[0]}' onclick='level(0)'>
+                    <div class='space'></div>
+                    <input type='button' class='checker' value='${difficulties[1]}' onclick='level(1)'>
+                    <div class='space'></div>
+                    <input type='button' class='checker' value='${difficulties[2]}' onclick='level(2)'>
+                    <div class='space'></div>
+                    <input type='button' class='checker' value='${difficulties[3]}' onclick='level(3)'>
+                    <div class='space'></div>
+                    <input type='button' class='checker' value='${difficulties[4]}' onclick='level(4)'>
+                    `
+                    document.getElementById("center").innerHTML=`${val}`;
+                }
+                val = `<div class='space'></div>
+                    <div style='text-align: center' class='huge'>Select level</div>
+                    <div class='space2'></div>
+                    <div id='levelarea'>
+                        <div id='left' style='min-height: 500px; width: 100px; float: left;'></div>
+                        <div id='center' style='min-height: 500px; width: 850px; float: left;'></div>
+                        <div id='right' style='min-height: 500px; width: 100px; float: left;'></div>
+                    </div>`
+                document.getElementById("con").innerHTML=`${val}`;
+                if(mode == 0){menugenA(0);}
+                else if(mode == 1){menugenB();}
             }
             function level(x){
                 value = 100;
                 lvl = x;
-                if(lvl<=levellist.length){
-                    ti = levellist[lvl-1][0];
-                    inc = levellist[lvl-1][1];
-                    a = levellist[lvl-1][2];
-                    b = [...levellist[lvl-1][3]];
-                    c = [...levellist[lvl-1][4]];
-                    ar = levellist[lvl-1][5];
-                    coc = levellist[lvl-1][6];
+                if(mode == 0){
+                    if(lvl<=levellist.length){
+                        ti = levellist[lvl-1][0];
+                        inc = levellist[lvl-1][1];
+                        a = levellist[lvl-1][2];
+                        b = [...levellist[lvl-1][3]];
+                        c = [...levellist[lvl-1][4]];
+                        ar = levellist[lvl-1][5];
+                        coc = levellist[lvl-1][6];
+                    }
+                    else{
+                        ti = levellist[levellist.length-1][0];
+                        inc = levellist[levellist.length-1][1];
+                        a = levellist[levellist.length-1][2];
+                        b = [...levellist[levellist.length-1][3]];
+                        c = [...levellist[levellist.length-1][4]];
+                        ar = levellist[levellist.length-1][5];
+                        coc = levellist[levellist.length-1][6];
+                    }
+                    name = `Level ${x}`;
                 }
-                else{
-                    ti = levellist[levellist.length-1][0];
-                    inc = levellist[levellist.length-1][1];
-                    a = levellist[levellist.length-1][2];
-                    b = [...levellist[levellist.length-1][3]];
-                    c = [...levellist[levellist.length-1][4]];
-                    ar = levellist[levellist.length-1][5];
-                    coc = levellist[levellist.length-1][6];
+                else if(mode == 1){
+                    ti = modelist[x][0];
+                    inc = modelist[x][1];
+                    a = modelist[x][2];
+                    b = [...modelist[x][3]];
+                    c = [...modelist[x][4]];
+                    ar = modelist[x][5];
+                    coc = modelist[x][6];
+                    name = difficulties[x];
                 }
                 info(ti, inc, a, b, c, ar, coc)
             }
             function info(ti, inc, a, b, c, ar, coc){
                 let val = ''
-                document.getElementById('main').innerHTML=`
-                    <div id='con' style='text-align: center;'></div>`
+                document.getElementById('con').innerHTML=`
+                    <div id='middler' style='text-align: center;'></div>`
                 val += `<div class='space'></div>
-                        <div class='big'>Level ${lvl}</div>
-                        <div class='space2'></div>
-                        <div class='med'>Board Size: ${a} x ${a}</div>
-                        <div class='space'></div>`;
-                for(i=-1;i<multi.length;i++){
+                    <div class='big'>${name}</div>
+                    <div class='space2'></div>
+                    <div class='med'>Board Size: ${a} x ${a}</div>
+                    <div class='space'></div>`;
+                for(let i=-1;i<multi.length;i++){
                     if(b[i+1]>0){
                         if(i<0){
                             if(c[0]==false){val += `<div class='med'>Bombs: ${b[i+1]}</div><div class='space'></div>`}
@@ -414,11 +466,11 @@
                 else if(b[4]>0 && c[0]==true){val += `<div class='med'>Anti Bombs: ???</div><div class='space'></div>`}
                 val += `<div class='med'>Time: ${ti} + ${inc} sec </div>
                         <div class='space'></div>
-                        <div class='med'>Number Showing: ${ar} </div>
+                        <div class='med'>Mine Template: ${ar} </div>
                         <div class='space'></div>`;
                 if(coc == true){val += `<div class='med'>Cockroach modifier</div><div class='space'></div>`}
                 val += `<input class="checker" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
-                document.getElementById('con').innerHTML=val;    
+                document.getElementById('middler').innerHTML=val;    
             }
             function generate(ti, inc, a, b, c, ar, coc){
                 state = 0;
@@ -427,12 +479,12 @@
                 cap = c;
                 cockroach = coc;
                 if(cap[0]==true){
-                    for(i=1;i<cap.length;i++){
+                    for(let i=1;i<cap.length;i++){
                         bombs[i-1] += Math.floor(Math.random()*(cap[i]+1));
                     }
                 }
                 bombscopy = [];
-                for(i=0;i<bombs.length;i++){bombscopy.push(bombs[i]);}
+                for(let i=0;i<bombs.length;i++){bombscopy.push(bombs[i]);}
                 t = ti;
                 inc = inc;
                 if(ar == 'basic'){
@@ -459,12 +511,10 @@
                 }
                 places = size*size-bombsum;
                 let val = "";
-                val += `
-                    <div id='con'>
-                        <div id='border'></div>
+                val += `<div id='border'></div>
                         <div id='properties'>
                             <div class='space2'></div>
-                            <div id='lev' class='big'>Level ${lvl}</div>
+                            <div id='lev' class='big'>${name}</div>
                             <div class='space4'></div>
                             <div id='placecounter' class='med'></div>
                             <div id='bombscounter'></div>
@@ -474,15 +524,13 @@
                                 <div id="timer2" style="width:${value}%;"></div>
                             </div>
                             <div id='counter' class='tiny' style='text-align: center'></div>
-                        </div>
-                    </div>
-                    `
-                document.getElementById('main').innerHTML=val;val='';
+                        </div>`
+                document.getElementById('con').innerHTML=val;val='';
                 document.getElementById('bombscounter').innerHTML=bombdisplay();
                 val += `<table style='border-collapse: collapse; padding: 0; margin: 0;'>`;
-                for(i=0;i<size;i++){
+                for(let i=0;i<size;i++){
                     val += "<tr>";
-                    for(j=0;j<size;j++){
+                    for(let j=0;j<size;j++){
                         val += `
                             <td style='padding: 0; margin: 0;'>
                                 <div style=" text-align: center; font-size: ${500/size}px; width: ${650/size}px; height: ${650/size}px; border: ${30/size}px #888 solid; font-weight: 700;" id='a${j + i*size + 1}' ">
@@ -516,7 +564,7 @@
             }
             function bombdisplay(){
                 let val = ''
-                for(i=1;i<flagallow.length;i++){
+                for(let i=1;i<flagallow.length;i++){
                     if(flagallow[i]==true){
                         val += `<div class='space'></div>
                             <div id='bombcounter${i}' class='med'>Bomb${i}</div>`
@@ -535,7 +583,7 @@
             function time() {
                 if (value <= 0) {
                     clearInterval(interval);
-                        lose();
+                    end(false);
                 } 
                 else {
                     value-=10/t;
@@ -553,16 +601,16 @@
                 while(bomblist.length<bombsum){
                     var nw = true
                     a = Math.floor(Math.random()*size*size)
-                    for(i=0;i<bomblist.length;i++){
+                    for(let i=0;i<bomblist.length;i++){
                         if(a==bomblist[i]){nw = false; break;}
                     }
                     if(nw == true){
-                        for(i=0;i<redflag.length;i++){
+                        for(let i=0;i<redflag.length;i++){
                             if(a==redflag[i]){nw = false; break;}
                         }
                     }
                     if(nw == true){
-                        for(i=bombs.length-1;bombs[i]<=0;i--){
+                        for(let i=bombs.length-1;bombs[i]<=0;i--){
                             bombs.splice(i, 1)
                         }
                         if(bombs.length<=4){mainlist[a][2] = bombs.length;}
@@ -616,6 +664,7 @@
             }
             function check(x){
                 if(mainlist[x][1] != 1){
+                    bonus();
                     change(x);
                 }
                 next();
@@ -623,7 +672,7 @@
             function change(x){
                 var count = 0
                 var ncount = 0
-                for(i=0;i<bomblist.length;i++){
+                for(let i=0;i<bomblist.length;i++){
                     if(x==bomblist[i]){count+=100;}
                     else{
                         for(j=0;j<area.length;j++){
@@ -641,7 +690,6 @@
                     }
                 }
                 changevalue(x, count, ncount);
-                bonus();
             }
             function checkarea(x, y){
                 var allow = true;
@@ -699,7 +747,7 @@
             }
             function placecount(){
                 var place = 0;
-                for(i=0;i<mainlist.length;i++){
+                for(let i=0;i<mainlist.length;i++){
                     if(mainlist[i][1] == 1){
                         place++;
                         if(place>=places){state = 2;}
@@ -707,8 +755,8 @@
                 }
                 if(cap[0]==false){document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;}
                 else{document.getElementById('placecounter').innerHTML='Places: '+place+' / ???'}
-                if(state==1){lose();}
-                else if(state==2){win();}
+                if(state==1){end(false);}
+                else if(state==2){end(true);}
             }
             function cockroachmove(x){
                 let a = cockroach;
@@ -719,34 +767,33 @@
                 change(a);
                 change(cockroach);
             }
-            function lose(){
+            function end(win){
                 clearInterval(interval);
-                document.getElementById('main').innerHTML=`
-                    <div id="con">
-                    <div class="huge" style="text-align: center; margin: 20px;">Minesweeper</div>
-                    <div class="space"></div>
-                    <div class="big" style="color: red; text-align: center; word-wrap: break-word;" id="failtext">Failed</div>
-                    <div class="space"></div>
-                    <input class="checker" value="Try Again" type="button" id="fail" onclick="level(${lvl})">
-                    <div class="space"></div>
-                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="levelmenu()">
-                    </div>`
+                if(win==true){
+                    if(mode==0){endgen(win, [0, 1, 2, 3])
+                        if(maxlvl<=lvl){
+                            maxlvl = lvl + 1;
+                        }
+                    }
+                    else if(mode==1){endgen(win, [1, 2, 3])}
+                    
+                }
+                if(win==false){
+                    if(mode==0 || mode==1){endgen(win, [4, 2, 3])}
+                }
             }
-            function win(){
-                if(lvl==maxlvl){maxlvl++;}
-                clearInterval(interval);
-                document.getElementById('main').innerHTML=`
-                    <div id="con">
-                    <div class="huge" style="text-align: center; margin: 20px;">Minesweeper</div>
-                    <div class="space"></div>
-                    <div class="big" style="color: lime; text-align: center; word-wrap: break-word;" id="failtext">Win</div>
-                    <div class="space"></div>
-                    <input class="checker" value="Next Level" type="button" id="next" onclick="level(${lvl + 1})">
-                    <div class="space"></div>
-                    <input class="checker" value="Replay" type="button" id="menu" onclick="level(${lvl})">
-                    <div class="space"></div>
-                    <input class="checker" value="Main Menu" type="button" id="menu" onclick="levelmenu()">
-                    </div>`
+            function endgen(win, buttonid){
+                let val = `<div class="big" style="text-align: center; margin: 30px;">${name}</div>
+                        <div class="space"></div>`;
+                if(win == true){val += `<div class="big" style="color: lime; text-align: center; word-wrap: break-word;" id="wintext">Win</div>
+                    <div class="space"></div>`}
+                else{val += `<div class="big" style="color: red; text-align: center; word-wrap: break-word;" id="failtext">Failed</div>
+                    <div class="space"></div>`}
+                for(let i=0;i<buttonid.length;i++){
+                    val += buttons[buttonid[i]]
+                    val += `<div class="space"></div>`
+                }
+                document.getElementById('con').innerHTML=val;
             }
             start();
         </script>
