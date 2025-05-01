@@ -158,16 +158,22 @@
                 height: 50px;
                 font-size: 30px;
                 border-radius: 7px;
-                border: 3px #666 solid;
                 margin-left: auto;
                 margin-right: auto;
-                background-color: #ddd;
                 font-weight: 700;
                 display: flex;
                 justify-content: center;
+            }
+            .checker.locked{
+                border: 3px #444 solid;
+                background-color: #bbb;
+            }
+            .checker.unlocked{
+                border: 3px #666 solid;
+                background-color: #ddd;
                 transition: .4s all ease-in-out;
             }
-            .checker:hover{
+            .checker.unlocked:hover{
                 width: 214px;
                 height: 46px;
                 margin-top: 2px;
@@ -299,62 +305,61 @@
                 [420, 1.5, 16, [35, 0, 0, 0, 0], [true, 2], 'basic', true], //lvl 29
                 [480, 2, 16, [10, 10, 10, 0, 10], [true, 1, 1, 1, 0, 1], 'knight', false] //lvl 30
             ];
-            const modelist = [
-                [999, 99, 9, [10, 0, 0, 0, 0], [false], 'basic', false], 
-                [240, 2, 12, [18, 0, 0, 0, 0], [false], 'basic', false], 
-                [180, 1.5, 15, [24, 12, 0, 0, 0], [false], 'basic', false], 
-                [120, 1, 18, [27, 18, 9, 0, 0], [false], 'basic', true], 
-                [25, 1, 20, [40, 25, 0, 0, 15], [false], 'basic', true]
-            ];
             const challengenames = ['Classic', 'Random', 'Multi', 'Negative', 'Blitz', 'Knight']
             const challengelist = [
                 [
                     [120, 3, 9, [10, 0, 0, 0, 0], [false], 'basic', false], 
                     [180, 1.5, 14, [30, 0, 0, 0, 0], [false], 'basic', false], 
                     [240, 0.7, 18, [60, 0, 0, 0, 0], [false], 'basic', false], 
-                    [300, 0.3, 22, [100, 0, 0, 0, 0], [false], 'basic', false]
+                    [300, 0.4, 22, [100, 0, 0, 0, 0], [false], 'basic', false],
+                    [360, 0.2, 25, [140, 0, 0, 0, 0], [false], 'basic', false]
                 ],
                 [
                     [120, 3, 9, [9, 0, 0, 0, 0], [true, 2], 'basic', false], 
                     [180, 1.5, 14, [27, 0, 0, 0, 0], [true, 6], 'basic', false], 
                     [240, 0.7, 18, [54, 0, 0, 0, 0], [true, 12], 'basic', false], 
-                    [300, 0.3, 22, [90, 0, 0, 0, 0], [true, 20], 'basic', false]
+                    [300, 0.4, 22, [90, 0, 0, 0, 0], [true, 20], 'basic', false],
+                    [360, 0.2, 25, [126, 0, 0, 0, 0], [true, 28], 'basic', false]
                 ],
                 [
                     [180, 4, 9, [8, 2, 0, 0, 0], [false], 'basic', false], 
-                    [240, 2, 14, [21, 9, 0, 0, 0], [false], 'basic', false], 
-                    [300, 1, 18, [30, 18, 12, 0, 0], [false], 'basic', false], 
-                    [360, 0.5, 22, [40, 30, 20, 10, 0], [false], 'basic', false]
+                    [270, 2, 14, [21, 9, 0, 0, 0], [false], 'basic', false], 
+                    [360, 1, 18, [30, 18, 12, 0, 0], [false], 'basic', false], 
+                    [450, 0.6, 22, [40, 30, 20, 10, 0], [false], 'basic', false],
+                    [540, 0.3, 25, [35, 35, 35, 35, 0], [false], 'basic', false]
                 ],
                 [
                     [180, 6, 9, [8, 0, 0, 0, 2], [false], 'basic', false], 
-                    [240, 3, 14, [24, 0, 0, 0, 6], [false], 'basic', false], 
-                    [300, 1.5, 18, [36, 12, 12, 0, 12], [false], 'basic', false], 
-                    [360, 0.7, 22, [40, 20, 20, 0, 20], [false], 'basic', false]
+                    [270, 3, 14, [24, 0, 0, 0, 6], [false], 'basic', false], 
+                    [360, 1.5, 18, [36, 12, 0, 0, 12], [false], 'basic', false], 
+                    [450, 0.8, 22, [50, 30, 0, 0, 20], [false], 'basic', false],
+                    [540, 0.4, 25, [60, 30, 25, 0, 25], [false], 'basic', false]
                 ],
                 [
                     [6, 6, 9, [8, 0, 0, 0, 0], [false], 'basic', false], 
                     [5, 5, 14, [24, 0, 0, 0, 0], [false], 'basic', false], 
                     [4, 4, 18, [48, 0, 0, 0, 0], [false], 'basic', false], 
-                    [3, 3, 22, [80, 0, 0, 0, 0], [false], 'basic', false]
+                    [3, 3, 22, [80, 0, 0, 0, 0], [false], 'basic', false],
+                    [2.5, 2.5, 25, [96, 16, 0, 0, 0], [false], 'basic', false]
                 ],
                 [
                     [240, 8, 9, [8, 0, 0, 0, 0], [false], 'knight', false], 
                     [360, 5, 14, [24, 0, 0, 0, 0], [false], 'knight', false], 
                     [480, 3, 18, [48, 0, 0, 0, 0], [false], 'knight', false], 
-                    [600, 2, 22, [64, 16, 0, 0, 0], [false], 'knight', false]
+                    [600, 2, 22, [64, 16, 0, 0, 0], [false], 'knight', false],
+                    [720, 1.5, 25, [64, 32, 16, 0, 0], [false], 'knight', false]
                 ]
             ]
-            const difficulties = ['Easy','Normal','Hard','Insane'];
+            const difficulties = ['Easy','Normal','Hard','Extreme','Insane'];
             const buttons = [
-                `<input class="checker" value="Next Level" type="button" id="next" onclick="level(lvl + 1)">`,
-                `<input class="checker" value="Replay" type="button" id="restart" onclick="level(lvl)">`,
-                `<input class="checker" value="Main Menu" type="button" id="mainmenu" onclick="start()">`,
-                `<input class="checker" value="Change Level" type="button" id="menu" onclick="levelmenu(mode)">`,
-                `<input class="checker" value="Try Again" type="button" id="fail" onclick="level(lvl, challenge)">`,
+                `<input class="checker unlocked" value="Next Level" type="button" id="next" onclick="level(lvl + 1)">`,
+                `<input class="checker unlocked" value="Replay" type="button" id="restart" onclick="level(lvl)">`,
+                `<input class="checker unlocked" value="Main Menu" type="button" id="mainmenu" onclick="start()">`,
+                `<input class="checker unlocked" value="Change Level" type="button" id="menu" onclick="levelmenu(mode)">`,
+                `<input class="checker unlocked" value="Try Again" type="button" id="fail" onclick="level(lvl, challenge)">`,
                 ``
             ]
-            const difcolors = ['#25C40C','#EFDF00','#EF4000','#A900F2'];
+            const difcolors = ['#25C40C','#EFDF00','#E8A303','#EF4000','#A900F2'];
             var passed = [];
             var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];//lose
             var lvl = 1;
@@ -432,19 +437,24 @@
                         val = '';
                         challenge = y;
                         for(let i=0; i<challengelist[y].length; i++){
-                            val += `<input type='button' style='border-color: ${difcolors[i]};' class='checker' value='${difficulties[i]}' onclick='level(${i}, ${y})'>
-                            <div class='space'></div>`
-                            document.getElementById('center').innerHTML=`${val}`;
+                            if(i<=Math.max(passed[y], 2)){
+                                val += `<input type='button' style='border-color: ${difcolors[i]};' class='checker unlocked' value='${difficulties[i]}' onclick='level(${i}, ${y})'>
+                                <div class='space'></div>`;
+                            }
+                            else{
+                                val += `<input type='button' class='checker locked' value='???'><div class='space'></div>`;
+                            }
                         }
+                        document.getElementById('center').innerHTML=`${val}`;
                         document.getElementById('top').innerHTML=`${challengenames[y]} Challenge`;
                     }
                     for(let i=0; i<challengenames.length; i++){
                         if(passed[i] <= 0 && passed[i] > difcolors.length){
-                            val += `<input type='button' class='checker' value='${challengenames[i]}' id='ch${i}'>
+                            val += `<input type='button' class='checker unlocked' value='${challengenames[i]}' id='ch${i}'>
                             <div class='space'></div>`;
                         }
                         else{
-                            val += `<input style='border-color: ${difcolors[passed[i]-1]}' type='button' class='checker' value='${challengenames[i]}' id='ch${i}'>
+                            val += `<input style='border-color: ${difcolors[passed[i]-1]}' type='button' class='checker unlocked' value='${challengenames[i]}' id='ch${i}'>
                             <div class='space'></div>`;
                         }
                     }
@@ -530,7 +540,7 @@
                         <div class='med'>Mine Template: ${ar} </div>
                         <div class='space'></div>`;
                 if(coc == true){val += `<div class='med'>Cockroach modifier</div><div class='space'></div>`}
-                val += `<input class="checker" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
+                val += `<input class="checker unlocked" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
                 document.getElementById('middler').innerHTML=val;    
             }
             function generate(ti, inc, a, b, c, ar, coc){
