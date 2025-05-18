@@ -263,6 +263,18 @@
                 background-color: #e3bd00;
                 color: black;
             }
+            .input{
+                width: 200px;
+                height: 40px;
+                font-size: 30px;
+            }
+            .checkbox{
+                width: 30px;
+                height: 30px;
+            }
+            #custable td{
+                padding: 6px;
+            }
         </style>
     </head>
     <body>
@@ -270,40 +282,74 @@
         <script>
             const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
-            const pages = 2;
+            const pages = 4;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
             const levellist = [
-                [60, 3, 8, [8, 0, 0, 0, 0], [false], 'basic', false], //lvl 1
-                [90, 2, 10, [12, 0, 0, 0, 0], [false], 'basic', false], //lvl 2
-                [120, 1.5, 12, [18, 0, 0, 0, 0], [false], 'basic', false], //lvl 3
-                [120, 1.5, 12, [14, 4, 0, 0, 0], [false], 'basic', false], //lvl 4
-                [120, 1.5, 12, [9, 9, 0, 0, 0], [false], 'basic', false], //lvl 5
-                [120, 1.5, 12, [20, 0, 0, 0, 0], [true, 2], 'basic', false], //lvl 6
-                [180, 1, 14, [28, 0, 0, 0, 0], [false], 'basic', false], //lvl 7
-                [180, 1, 14, [16, 12, 0, 0, 0], [false], 'basic', false], //lvl 8
-                [210, 1, 14, [15, 10, 5, 0, 0], [false], 'basic', false], //lvl 9
-                [5, 5, 10, [15, 0, 0, 0, 0], [false], 'basic', false], //lvl 10
-                [210, 1, 14, [25, 0, 7, 0, 0], [false], 'basic', false], //lvl 11
-                [180, 1, 14, [10, 10, 10, 0, 0], [true, 1, 1, 1], 'basic', false], //lvl 12
-                [180, 1, 14, [6, 12, 15, 0, 0], [false], 'basic', false], //lvl 13
-                [180, 1, 14, [0, 16, 16, 0, 0], [false], 'basic', false], //lvl 14
-                [300, 2.5, 14, [30, 0, 0, 0, 0], [false], 'knight', false], //lvl 15
-                [240, 0.8, 16, [42, 0, 0, 0, 0], [false], 'basic', false], //lvl 16
-                [240, 0.8, 16, [16, 16, 10, 0, 0], [false], 'basic', false], //lvl 17
-                [300, 0.8, 16, [35, 0, 0, 0, 5], [false], 'basic', false], //lvl 18
-                [240, 0.8, 16, [14, 14, 14, 0, 0], [true, 1, 1, 1], 'basic', false], //lvl 19
-                [360, 2, 16, [32, 8, 0, 0, 0], [false], 'knight', false], //lvl 20
-                [300, 0.8, 16, [28, 0, 0, 0, 14], [false], 'basic', false], //lvl 21
-                [360, 2, 16, [20, 20, 0, 0, 0], [true, 2, 2], 'knight', false], //lvl 22
-                [300, 0.8, 16, [16, 16, 0, 0, 8], [false], 'basic', false], //lvl 23
-                [10, 2.5, 12, [18, 6, 0, 0, 0], [false], 'basic', false], //lvl 24
-                [420, 2, 16, [30, 0, 0, 0, 10], [false], 'knight', false], //lvl 25
-                [300, 2, 14, [25, 0, 0, 0, 0], [false], 'basic', true], //lvl 26
-                [300, 0.8, 16, [15, 15, 10, 0, 3], [false], 'basic', false], //lvl 27
-                [25, 25, 12, [18, 0, 0, 0, 0], [true, 4], 'knight', false], //lvl 28
-                [420, 1.5, 16, [35, 0, 0, 0, 0], [true, 2], 'basic', true], //lvl 29
-                [480, 2, 16, [10, 10, 10, 0, 10], [true, 1, 1, 1, 0, 1], 'knight', false] //lvl 30
+                //stage 1 (single, double, random)
+                [120, 5, 8, [7, 0, 0, 0, 0], [false], 'basic', false], //lvl 1
+                [150, 4, 9, [10, 0, 0, 0, 0], [false], 'basic', false], //lvl 2
+                [180, 3, 10, [13, 0, 0, 0, 0], [false], 'basic', false], //lvl 3
+                [210, 2.5, 11, [16, 0, 0, 0, 0], [false], 'basic', false], //lvl 4
+                [240, 2, 12, [20, 0, 0, 0, 0], [false], 'basic', false], //lvl 5
+                [300, 3, 12, [16, 4, 0, 0, 0], [false], 'basic', false], //lvl 6
+                [300, 3, 12, [12, 8, 0, 0, 0], [false], 'basic', false], //lvl 7
+                [25, 4, 10, [12, 0, 0, 0, 0], [false], 'basic', false], //lvl 8
+                [240, 2, 13, [24, 0, 0, 0, 0], [false], 'basic', false], //lvl 9
+                [360, 3, 13, [12, 12, 0, 0, 0], [false], 'basic', false], //lvl 10
+                [240, 2, 13, [21, 0, 0, 0, 0], [true, 4], 'basic', false], //lvl 11
+                [300, 3, 13, [13, 9, 0, 0, 0], [true, 1, 1], 'basic', false], //lvl 12
+                [30, 5, 13, [22, 0, 0, 0, 0], [false], 'basic', false], //lvl 13
+                [300, 3, 13, [9, 16, 0, 0, 0], [false], 'basic', false], //lvl 14
+                [120, 4, 13, [12, 12, 0, 0, 0], [true, 1, 1], 'basic', false], //lvl 15
+                //stage 2 (triple, negative)
+                [240, 1.5, 14, [28, 0, 0, 0, 0], [false], 'basic', false], //lvl 16
+                [300, 2, 14, [17, 12, 0, 0, 0], [false], 'basic', false], //lvl 17
+                [360, 2.5, 14, [14, 10, 6, 0, 0], [false], 'basic', false], //lvl 18
+                [300, 2, 14, [14, 14, 0, 0, 0], [true, 2, 2], 'basic', false], //lvl 19
+                [360, 2.5, 14, [9, 9, 9, 0, 0], [true, 2, 2, 2], 'basic', false], //lvl 20
+                [240, 3, 14, [24, 0, 0, 0, 4], [false], 'basic', false], //lvl 21
+                [300, 3, 14, [20, 0, 0, 0, 10], [false], 'basic', false], //lvl 22
+                [240, 1.2, 15, [34, 0, 0, 0, 0], [false], 'basic', false], //lvl 23
+                [360, 2, 15, [15, 12, 8, 0, 0], [false], 'basic', false], //lvl 24
+                [360, 4, 15, [22, 5, 0, 0, 5], [false], 'basic', false], //lvl 25
+                [5, 5, 12, [16, 0, 0, 0, 0], [false], 'basic', false], //lvl 26
+                [300, 1.5, 15, [0, 17, 17, 0, 0], [false], 'basic', false], //lvl 27
+                [360, 3, 15, [0, 28, 0, 0, 7], [false], 'basic', false], //lvl 28
+                [40, 8, 13, [12, 0, 0, 0, 9], [false], 'basic', false], //lvl 29
+                [360, 3.5, 15, [10, 10, 0, 0, 10], [true, 3, 3, 0, 0, 3], 'basic', false], //lvl 30
+                //stage 3 (quarduple, cockroach)
+                [300, 5, 12, [18, 0, 0, 0, 0], [false], 'basic', true], //lvl 31
+                [360, 4, 14, [25, 0, 0, 0, 0], [false], 'basic', true], //lvl 32
+                [240, 1.5, 16, [15, 15, 10, 0, 0], [false], 'basic', false], //lvl 33
+                [300, 2, 16, [20, 0, 0, 0, 20], [true, 1, 0, 0, 0, 1], 'basic', false], //lvl 34
+                [360, 3, 16, [33, 0, 0, 0, 0], [false], 'basic', true], //lvl 35
+                [300, 2, 16, [16, 12, 8, 4, 0], [false], 'basic', false], //lvl 36
+                [360, 3.5, 16, [25, 10, 0, 0, 0], [false], 'basic', true], //lvl 37
+                [10, 5, 16, [38, 0, 0, 0, 0], [true, 2], 'basic', false], //lvl 38
+                [300, 1.5, 17, [25, 15, 10, 0, 0], [false], 'basic', false], //lvl 39
+                [360, 3, 17, [15, 15, 0, 0, 15], [false], 'basic', false], //lvl 40
+                [360, 4, 17, [21, 21, 0, 0, 0], [true, 1, 1], 'basic', true], //lvl 41
+                [7, 7, 12, [9, 9, 0, 0, 0], [true, 2, 2], 'basic', false], //lvl 42
+                [360, 3, 17, [12, 10, 10, 0, 12], [false], 'basic', false], //lvl 43
+                [240, 1, 17, [10, 10, 10, 10, 0], [false], 'basic', false], //lvl 44
+                [360, 4, 17, [20, 15, 0, 0, 10], [false], 'basic', true], //lvl 45
+                //stage 4 (chess knight)
+                [360, 6, 12, [16, 0, 0, 0, 0], [false], 'knight', false], //lvl 46
+                [240, 2.5, 18, [50, 0, 0, 0, 0], [false], 'basic', true], //lvl 47
+                [240, 1.5, 18, [13, 13, 13, 13, 0], [false], 'basic', false], //lvl 48
+                [420, 5, 14, [25, 0, 0, 0, 0], [false], 'knight', false], //lvl 49
+                [300, 2, 18, [10, 10, 10, 10, 10], [false], 'basic', false], //lvl 50
+                [300, 3, 18, [33, 11, 0, 0, 0], [true, 2, 2], 'basic', true], //lvl 51
+                [480, 4, 16, [24, 12, 0, 0, 0], [false], 'knight', false], //lvl 52
+                [5, 3, 18, [40, 0, 0, 0, 0], [false], 'basic', false], //lvl 53
+                [25, 15, 18, [40, 0, 0, 0, 0], [true, 6], 'basic', true], //lvl 54
+                [240, 1.5, 18, [15, 13, 11, 9, 0], [true, 2, 2, 1, 1], 'basic', false], //lvl 55
+                [480, 3, 18, [44, 0, 0, 0, 0], [true, 4], 'knight', false], //lvl 56
+                [480, 3, 18, [15, 15, 15, 0, 0], [false], 'knight', false], //lvl 57
+                [300, 1, 18, [0, 15, 15, 15, 8], [false], 'basic', false], //lvl 58
+                [360, 3, 18, [20, 15, 10, 0, 3], [true, 1, 1, 1, 0, 1], 'basic', true], //lvl 59
+                [600, 5, 18, [9, 9, 9, 9, 9], [true, 2, 2, 2, 2, 2], 'knight', false], //lvl 60
             ];
             const challengenames = ['Classic', 'Random', 'Multi', 'Negative', 'Blitz', 'Knight']
             const challengelist = [
@@ -360,8 +406,9 @@
                 ``
             ]
             const difcolors = ['#25C40C','#EFDF00','#E8A303','#EF4000','#A900F2'];
+            const customborder = [5, 36];
             var passed = [];
-            var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];//lose
+            var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
             var lvl = 1;
             var maxlvl = 1;
             var size = 9;
@@ -385,6 +432,7 @@
             var mode = 0;
             var challenge = 0;
             var name = '';
+            var custom = [];
             function start(){
                 for(let i=0;i<challengelist.length;i++){
                     passed.push(0);
@@ -402,7 +450,10 @@
                 <div class="space2"></div>
                 <input type="button" class="modebutton" value="Adventure" onclick="levelmenu(0)">
                 <div class="space"></div>
-                <input type="button" class="modebutton" value="Challenges" onclick="levelmenu(1)">`;
+                <input type="button" class="modebutton" value="Challenges" onclick="levelmenu(1)">
+                <div class="space"></div>
+                <input type="button" class="modebutton" value="Custom" onclick="levelmenu(2)">`;
+                
             }
             function levelmenu(x){
                 let val = '';
@@ -464,6 +515,70 @@
                     }
                     document.getElementById('top').innerHTML='Select Challenge';
                 }
+                function menugenC(){
+                    function create(correct = true){
+                        custom[0] = parseFloat(document.getElementById('gettime').value)
+                        custom[1] = parseFloat(document.getElementById('getinc').value);
+                        custom[2] = parseInt(document.getElementById('getsize').value);
+                        custom[3] = [];
+                        for(let i=0; i<5; i++){
+                            custom[3].push(parseInt(document.getElementById(`getbombs${i}`).value))
+                        }
+                        custom[4] = [false];
+                        custom[5] = document.getElementById('getar').value;
+                        custom[6] = document.getElementById('getcoc').checked;
+                        if(custom[2]>=5 && custom[2]<=36){
+                            
+                        }
+                        else{
+                            alert('Board size should be beetwen 5 and 36');
+                            correct = false;
+                        }
+                        if(custom[3].reduce((acc, curr) => acc + curr, 0) <= custom[2]*custom[2]-10 && custom[3].reduce((acc, curr) => acc + curr, 0) >= Math.ceil(custom[2] * custom[2]/50)){
+                        
+                        }
+                        else{
+                            if(correct == true){
+                                alert(`Number of bombs should not be greater than ${custom[2]*custom[2]-10} and less than ${Math.ceil(custom[2] * custom[2]/50)}`);
+                            }
+                            correct = false;
+                        }
+                        if(custom[0]>0 && custom[1]>=0){
+                            
+                        }
+                        else{
+                            if(correct == true){
+                                alert('time and increment cannot be negative')
+                            }
+                            correct = false;
+                        }
+                        if(correct == true){level()};
+                    }
+                    val = '';
+                    val += `<table id='custable'>
+                                <tr><td colspan='2'><div class='big' style='text-align: center; padding: 15px;'>General</div></td><td colspan='2' style='text-align: center; padding: 15px;'><div class='big'>Bombs</div></td>
+                                <tr><td><div class='med'>Size </div></td><td><input class='input' value='9' type='number' id='getsize'></td>
+                                <td><div class='med'>Single </div></td><td><input class='input' value='10' type='number' id='getbombs0'></td></tr>
+                                <tr><td><div class='med'>Time (s) </div></td><td><input class='input' value='120' type='number' id='gettime'></td>
+                                <td><div class='med'>Double </div></td><td><input class='input' value='0' type='number' id='getbombs1'></td></tr>
+                                <tr><td><div class='med'>Increment </div></td><td><input class='input' value='2' type='number' id='getinc'></td>
+                                <td><div class='med'>Triple </div></td><td><input class='input' value='0' type='number' id='getbombs2'></td></tr>
+                                <tr><td><div class='med'>Template </div></td>
+                                    <td><select class='input' id='getar'>
+                                            <option value='basic'>Basic</option>
+                                            <option value='knight'>Knight</option>
+                                        </select>
+                                    </td>
+                                <td><div class='med'>Quadruple </div></td><td><input class='input' value='0' type='number' id='getbombs3'></td></tr>
+                                <tr><td><div class='med'>Cockroach </div></td><td><input class='checkbox' value='false' type='checkbox' id='getcoc'></td>
+                                <td><div class='med'>Negative </div></td><td><input class='input' value='0' type='number' id='getbombs4'></td></tr>
+                            </table>
+                            <div class='space2'></div>
+                            <input type='button' value='Create' class='checker unlocked' id='creator'>`;
+                    document.getElementById('center').innerHTML=`${val}`;
+                    document.getElementById(`creator`).addEventListener('click', () => create());
+                    document.getElementById('top').innerHTML='Create Level';
+                }
                 val = `<div class='space'></div>
                     <div style='text-align: center' class='huge' id='top'>Select level</div>
                     <div class='space2'></div>
@@ -475,8 +590,9 @@
                 document.getElementById("con").innerHTML=`${val}`;
                 if(mode == 0){menugenA(0);}
                 else if(mode == 1){menugenB();}
+                else if(mode == 2){menugenC();}
             }
-            function level(x, y = 0){
+            function level(x = 0, y = 0){
                 value = 100;
                 lvl = x;
                 if(mode == 0){
@@ -509,6 +625,16 @@
                     ar = challengelist[y][x][5];
                     coc = challengelist[y][x][6];
                     name = `<div style='color: ${difcolors[x]}'>${challengenames[y]}</div>`;
+                }
+                else if(mode == 2){
+                    ti = custom[0];
+                    inc = custom[1];
+                    a = custom[2];
+                    b = [...custom[3]];
+                    c = [...custom[4]];
+                    ar = custom[5];
+                    coc = custom[6];
+                    name = `Custom Level`;
                 }
                 info(ti, inc, a, b, c, ar, coc)
             }
@@ -736,11 +862,11 @@
             function check(x){
                 if(mainlist[x][1] != 1){
                     bonus();
-                    change(x);
+                    change(x)
                 }
                 next();
             }
-            function change(x){
+            function change(x, c = false){
                 var count = 0
                 var ncount = 0
                 for(let i=0;i<bomblist.length;i++){
@@ -757,7 +883,12 @@
                 mainlist[x][1] = 1;
                 if(count==0 && ncount==0){
                     for(let i=0; i<area.length; i++){
-                        if(checkarea(x, i)){checknext.push(x+area[i][0]+size*area[i][1])}
+                        if(checkarea(x, i) && mainlist[x+area[i][0]+size*area[i][1]][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]][1] != 0.5){
+                            checknext.push(x+area[i][0]+size*area[i][1])
+                            if(c == false){
+                                mainlist[x+area[i][0]+size*area[i][1]][1] = 0.5;
+                            }
+                        }
                     }
                 }
                 changevalue(x, count, ncount);
@@ -835,8 +966,8 @@
                 else if((x-1)%size<(cockroach-1)%size){cockroach--;}
                 if(Math.floor((x-1)/size)>Math.floor((cockroach-1)/size)){cockroach+=size;}
                 else if(Math.floor((x-1)/size)<Math.floor((cockroach-1)/size)){cockroach-=size;}
-                change(a);
-                change(cockroach);
+                change(a, true);
+                change(cockroach, true);
             }
             function end(win){
                 clearInterval(interval);
@@ -852,10 +983,16 @@
                         }
                         endgen(win, [1, 2, 3]);                          
                     }
+                    else if(mode==2){
+                        if(passed[challenge]<lvl+1){
+                            passed[challenge]=lvl+1;
+                        }
+                        endgen(win, [1, 2, 3]);                          
+                    }
                     
                 }
                 if(win==false){
-                    if(mode==0 || mode==1){endgen(win, [4, 2, 3])}
+                    if(mode==0 || mode==1 || mode==2){endgen(win, [4, 2, 3])}
                 }
             }
             function endgen(win, buttonid){
