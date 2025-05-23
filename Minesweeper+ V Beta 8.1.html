@@ -13,7 +13,7 @@
                 background-color: #232323;
                 border: #666 15px solid;
                 width: 1200px;
-                min-height: 780px;
+                min-height: 800px;
                 border-radius: 15px;
             }
             .hspace{
@@ -212,12 +212,12 @@
                 border: 10px rgb(0, 196, 49) solid;
             }
             .anylevel{
-                width: 120px;
-                height: 120px;
-                font-size: 85px;
+                width: 110px;
+                height: 110px;
+                font-size: 80px;
                 font-weight: 700;
                 border-radius: 30px;
-                margin: 15px;
+                margin: 10px 20px 10px 20px;
                 float: left;
                 color: black;
                 text-align: center;
@@ -233,10 +233,10 @@
                 transition: 0.2s all ease-in-out;
             }
             .anylevel.unlocked:hover{
-                width: 114px;
-                height: 114px;
+                width: 104px;
+                height: 104px;
                 border-radius: 28px;
-                margin: 18px;
+                margin: 13px 23px 13px 23px;
                 border: 10px rgb(0, 196, 49) solid;
             }
             .anylevel.completed{
@@ -246,10 +246,10 @@
                 transition: 0.2s all ease-in-out;
             }
             .anylevel.completed:hover{
-                width: 114px;
-                height: 114px;
+                width: 104px;
+                height: 104px;
                 border-radius: 28px;
-                margin: 18px;
+                margin: 13px 23px 13px 23px;
                 border: 10px rgb(11, 160, 180) solid;
             }
             #levelarea{
@@ -282,11 +282,10 @@
         <script>
             const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
-            const pages = 4;
+            const pages = 3;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
             const levellist = [
-                //stage 1 (single, double, random)
                 [120, 5, 8, [7, 0, 0, 0, 0], [false], 'basic', false], //lvl 1
                 [150, 4, 9, [10, 0, 0, 0, 0], [false], 'basic', false], //lvl 2
                 [180, 3, 10, [13, 0, 0, 0, 0], [false], 'basic', false], //lvl 3
@@ -302,7 +301,6 @@
                 [30, 5, 13, [22, 0, 0, 0, 0], [false], 'basic', false], //lvl 13
                 [300, 3, 13, [9, 16, 0, 0, 0], [false], 'basic', false], //lvl 14
                 [120, 4, 13, [12, 12, 0, 0, 0], [true, 1, 1], 'basic', false], //lvl 15
-                //stage 2 (triple, negative)
                 [240, 1.5, 14, [28, 0, 0, 0, 0], [false], 'basic', false], //lvl 16
                 [300, 2, 14, [17, 12, 0, 0, 0], [false], 'basic', false], //lvl 17
                 [360, 2.5, 14, [14, 10, 6, 0, 0], [false], 'basic', false], //lvl 18
@@ -318,7 +316,6 @@
                 [360, 3, 15, [0, 28, 0, 0, 7], [false], 'basic', false], //lvl 28
                 [40, 8, 13, [12, 0, 0, 0, 9], [false], 'basic', false], //lvl 29
                 [360, 3.5, 15, [10, 10, 0, 0, 10], [true, 3, 3, 0, 0, 3], 'basic', false], //lvl 30
-                //stage 3 (quarduple, cockroach)
                 [300, 5, 12, [18, 0, 0, 0, 0], [false], 'basic', true], //lvl 31
                 [360, 4, 14, [25, 0, 0, 0, 0], [false], 'basic', true], //lvl 32
                 [240, 1.5, 16, [15, 15, 10, 0, 0], [false], 'basic', false], //lvl 33
@@ -334,7 +331,6 @@
                 [360, 3, 17, [12, 10, 10, 0, 12], [false], 'basic', false], //lvl 43
                 [240, 1, 17, [10, 10, 10, 10, 0], [false], 'basic', false], //lvl 44
                 [360, 4, 17, [20, 15, 0, 0, 10], [false], 'basic', true], //lvl 45
-                //stage 4 (chess knight)
                 [360, 6, 12, [16, 0, 0, 0, 0], [false], 'knight', false], //lvl 46
                 [240, 2.5, 18, [50, 0, 0, 0, 0], [false], 'basic', true], //lvl 47
                 [240, 1.5, 18, [13, 13, 13, 13, 0], [false], 'basic', false], //lvl 48
@@ -414,6 +410,7 @@
             var size = 9;
             var bombs = [10, 0];
             var cap = [false];
+            var loop = [false, false]
             var bombscopy = [10, 0];
             var bombsum = 10;
             var places = 0;
@@ -460,7 +457,7 @@
                 mode = x;
                 function menugenA(a){
                     val = '';
-                    for(let i=1+a*15;i<16+a*15;i++){
+                    for(let i=1+a*20;i<21+a*20;i++){
                         if(i < maxlvl){val += `<div class='anylevel completed' onclick='level(${i})'>${i}</div>`}
                         else if(i == maxlvl){val += `<div class='anylevel unlocked' onclick='level(${i})'>${i}</div>`}
                         else{val += `<div class='anylevel locked'></div>`}
@@ -474,7 +471,7 @@
                     else{
                         document.getElementById('left').innerHTML='';
                     }
-                    if(a<pages-1 && Math.floor((maxlvl-1)/15) > a){
+                    if(a<pages-1 && Math.floor((maxlvl-1)/20) > a){
                         document.getElementById('right').innerHTML=`<div class='space4'></div><div class='pointer' id='r'>></div>`;
                         document.getElementById(`r`).addEventListener('click', () => menugenA(a+1));
                     }
@@ -527,11 +524,11 @@
                         custom[4] = [false];
                         custom[5] = document.getElementById('getar').value;
                         custom[6] = document.getElementById('getcoc').checked;
-                        if(custom[2]>=5 && custom[2]<=36){
+                        if(custom[2]>=customborder[0] && custom[2]<=customborder[1]){
                             
                         }
                         else{
-                            alert('Board size should be beetwen 5 and 36');
+                            alert(`Board size should be beetwen ${customborder[0]} and ${customborder[1]}`);
                             correct = false;
                         }
                         if(custom[3].reduce((acc, curr) => acc + curr, 0) <= custom[2]*custom[2]-10 && custom[3].reduce((acc, curr) => acc + curr, 0) >= Math.ceil(custom[2] * custom[2]/50)){
@@ -638,7 +635,7 @@
                 }
                 info(ti, inc, a, b, c, ar, coc)
             }
-            function info(ti, inc, a, b, c, ar, coc){
+            function info(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false){
                 let val = ''
                 document.getElementById('con').innerHTML=`
                     <div id='middler' style='text-align: center;'></div>`
@@ -669,11 +666,12 @@
                 val += `<input class="checker unlocked" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
                 document.getElementById('middler').innerHTML=val;    
             }
-            function generate(ti, inc, a, b, c, ar, coc){
+            function generate(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false, l=[false, false]){
                 state = 0;
                 size = a;
                 bombs = b;
                 cap = c;
+                loop = l;
                 cockroach = coc;
                 if(cap[0]==true){
                     for(let i=1;i<cap.length;i++){
@@ -855,7 +853,7 @@
                     bomb(x);
                     interval = setInterval(time, 100);
                 }
-                if(mainlist[x][1] == 0){
+                if(mainlist[x][1] == 0 && state == 0){
                     check(x);
                 }
             }
@@ -869,24 +867,51 @@
             function change(x, c = false){
                 var count = 0
                 var ncount = 0
-                for(let i=0;i<bomblist.length;i++){
+                /*for(let i=0;i<bomblist.length;i++){
                     if(x==bomblist[i]){count+=100;}
                     else{
                         for(j=0;j<area.length;j++){
-                            if(checkarea(x, j) && (bomblist[i] == x + size * area[j][1] + area[j][0])){
+                            if(checkarea(x, j) === true && (bomblist[i] == x + size * area[j][1] + area[j][0])){
+                                if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
+                                else{ncount-=mainlist[bomblist[i]][2]}
+                            }
+                            else if(checkarea(x, j) !== false && checkarea(x, j) !== true && bomblist[i] == x + size * area[j][1] + area[j][0] + checkarea(x, j)){
                                 if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
                                 else{ncount-=mainlist[bomblist[i]][2]}
                             }
                         }
                     }
+                }*/
+                for(i=0;i<area.length;i++){
+                    if(mainlist[x][2]!=0){count+=100;}
+                    if(checkarea(x, i) !== false){
+                        if(checkarea(x, i)>0){count+=mainlist[checkarea(x, i)][2];}
+                        else{ncount-=mainlist[checkarea(x, i)][2]}
+                    }
                 }
                 mainlist[x][1] = 1;
-                if(count==0 && ncount==0){
+                /*if(count==0 && ncount==0){
                     for(let i=0; i<area.length; i++){
-                        if(checkarea(x, i) && mainlist[x+area[i][0]+size*area[i][1]][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]][1] != 0.5){
+                        if(checkarea(x, i) === true && mainlist[x+area[i][0]+size*area[i][1]][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]][1] != 0.5){
                             checknext.push(x+area[i][0]+size*area[i][1])
                             if(c == false){
                                 mainlist[x+area[i][0]+size*area[i][1]][1] = 0.5;
+                            }
+                        }
+                        else if(checkarea(x, i) !== false && checkarea(x, i) !== true && mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] != 0.5){
+                            checknext.push(x+area[i][0]+size*area[i][1]+checkarea(x, i));
+                            if(c == false){
+                                mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] = 0.5;
+                            }
+                        }
+                    }
+                }*/
+                if(count==0 && ncount==0){
+                    for(let i=0; i<area.length; i++){
+                        if(checkarea(x, i) !== false && mainlist[checkarea(x, i)][1] != 1 && mainlist[checkarea(x, i)][1] != 0.5){
+                            checknext.push(checkarea(x, i))
+                            if(c == false){
+                                mainlist[checkarea(x, i)][1] = 0.5;
                             }
                         }
                     }
@@ -895,18 +920,30 @@
             }
             function checkarea(x, y){
                 var allow = true;
+                var z = 0;
+                z += area[y][0];
+                z += area[y][1]*size;
                 if(area[y][0]<0 && (x-1) % size < Math.abs(area[y][0])){
-                    allow = false;
+                    if(loop[0] == false){allow = false;}
+                    else{z += size;}
+                    //if(loop[0] == true){z += size}
                 }
                 else if(area[y][0]>0 && (x-1) % size >= size - area[y][0]){
-                    allow = false;
+                    if(loop[0] == false){allow = false;}
+                    else{z -= size;}
+                    //if(loop[0] == true){z -= size}
                 }
                 if(area[y][1]<0 && x <= size * Math.abs(area[y][1])){
-                    allow = false;
+                    if(loop[1] == false){allow = false;}
+                    else{z += size * size;}
+                    //if(loop[1] == true){z += size * size}
                 }
                 else if(area[y][1]>0 && x + size * area[y][1] > size*size){
-                    allow = false;
+                    if(loop[1] == false){allow = false;}
+                    else{z -= size * size;}
+                    //if(loop[1] == true){z -= size * size}
                 }
+                if(allow == true){allow = x + z;}
                 return allow;
             }
             function next(){
@@ -918,8 +955,10 @@
                 else{
                     placecount();
                     for(i=1;i<flagallow.length;i++){
-                        if(flagallow[j]==true){flagcount(j);}
+                        if(flagallow[i]==true){flagcount(i);}
                     }
+                    if(state==1){end(false);}
+                    else if(state==2){end(true);}
                 }
             }
             function changevalue(x, count, ncount){
@@ -957,8 +996,6 @@
                 }
                 if(cap[0]==false){document.getElementById('placecounter').innerHTML='Places: '+place+' / '+places;}
                 else{document.getElementById('placecounter').innerHTML='Places: '+place+' / ???'}
-                if(state==1){end(false);}
-                else if(state==2){end(true);}
             }
             function cockroachmove(x){
                 let a = cockroach;
@@ -968,6 +1005,7 @@
                 else if(Math.floor((x-1)/size)<Math.floor((cockroach-1)/size)){cockroach-=size;}
                 change(a, true);
                 change(cockroach, true);
+                next();
             }
             function end(win){
                 clearInterval(interval);
