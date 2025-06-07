@@ -187,7 +187,7 @@
                 clear: both;
             }
             #timer2{
-                background-color: #00939d;
+                background-color: rgb(0, 192, 192);
                 height: 100%;
             }
             .pointer{
@@ -275,6 +275,9 @@
             #custable td{
                 padding: 6px;
             }
+            .bor{
+                border: 4px gray solid;
+            }
         </style>
     </head>
     <body>
@@ -282,114 +285,155 @@
         <script>
             const roma = ['I','II','III','IV','-I'];
             const multi = ['Double','Triple','Quadruple']
-            const pages = 3;
+            const pages = 5;
             const colorlist = ['#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', '#910000', '#4CA1A1', '#964600', '#616161', '#0800A8', '#004212', '#99004A', '#400032', '#692A2A', '#004A59', '#383838', '#000'];
             const ncolorlist = ['#8ABFA4','#18A9AE','#03C765','#C79303','#C103C7','#83605C','#A3BFC3','#C1AE80','#D0D0D0'];
+            const loops = ['none','horizontal','vertical','both'];
             const levellist = [
-                [120, 5, 8, [7, 0, 0, 0, 0], [false], 'basic', false], //lvl 1
-                [150, 4, 9, [10, 0, 0, 0, 0], [false], 'basic', false], //lvl 2
-                [180, 3, 10, [13, 0, 0, 0, 0], [false], 'basic', false], //lvl 3
-                [210, 2.5, 11, [16, 0, 0, 0, 0], [false], 'basic', false], //lvl 4
-                [240, 2, 12, [20, 0, 0, 0, 0], [false], 'basic', false], //lvl 5
-                [300, 3, 12, [16, 4, 0, 0, 0], [false], 'basic', false], //lvl 6
-                [300, 3, 12, [12, 8, 0, 0, 0], [false], 'basic', false], //lvl 7
-                [25, 4, 10, [12, 0, 0, 0, 0], [false], 'basic', false], //lvl 8
-                [240, 2, 13, [24, 0, 0, 0, 0], [false], 'basic', false], //lvl 9
-                [360, 3, 13, [12, 12, 0, 0, 0], [false], 'basic', false], //lvl 10
-                [240, 2, 13, [21, 0, 0, 0, 0], [true, 4], 'basic', false], //lvl 11
-                [300, 3, 13, [13, 9, 0, 0, 0], [true, 1, 1], 'basic', false], //lvl 12
-                [30, 5, 13, [22, 0, 0, 0, 0], [false], 'basic', false], //lvl 13
-                [300, 3, 13, [9, 16, 0, 0, 0], [false], 'basic', false], //lvl 14
-                [120, 4, 13, [12, 12, 0, 0, 0], [true, 1, 1], 'basic', false], //lvl 15
-                [240, 1.5, 14, [28, 0, 0, 0, 0], [false], 'basic', false], //lvl 16
-                [300, 2, 14, [17, 12, 0, 0, 0], [false], 'basic', false], //lvl 17
-                [360, 2.5, 14, [14, 10, 6, 0, 0], [false], 'basic', false], //lvl 18
-                [300, 2, 14, [14, 14, 0, 0, 0], [true, 2, 2], 'basic', false], //lvl 19
-                [360, 2.5, 14, [9, 9, 9, 0, 0], [true, 2, 2, 2], 'basic', false], //lvl 20
-                [240, 3, 14, [24, 0, 0, 0, 4], [false], 'basic', false], //lvl 21
-                [300, 3, 14, [20, 0, 0, 0, 10], [false], 'basic', false], //lvl 22
-                [240, 1.2, 15, [34, 0, 0, 0, 0], [false], 'basic', false], //lvl 23
-                [360, 2, 15, [15, 12, 8, 0, 0], [false], 'basic', false], //lvl 24
-                [360, 4, 15, [22, 5, 0, 0, 5], [false], 'basic', false], //lvl 25
-                [5, 5, 12, [16, 0, 0, 0, 0], [false], 'basic', false], //lvl 26
-                [300, 1.5, 15, [0, 17, 17, 0, 0], [false], 'basic', false], //lvl 27
-                [360, 3, 15, [0, 28, 0, 0, 7], [false], 'basic', false], //lvl 28
-                [40, 8, 13, [12, 0, 0, 0, 9], [false], 'basic', false], //lvl 29
-                [360, 3.5, 15, [10, 10, 0, 0, 10], [true, 3, 3, 0, 0, 3], 'basic', false], //lvl 30
-                [300, 5, 12, [18, 0, 0, 0, 0], [false], 'basic', true], //lvl 31
-                [360, 4, 14, [25, 0, 0, 0, 0], [false], 'basic', true], //lvl 32
-                [240, 1.5, 16, [15, 15, 10, 0, 0], [false], 'basic', false], //lvl 33
-                [300, 2, 16, [20, 0, 0, 0, 20], [true, 1, 0, 0, 0, 1], 'basic', false], //lvl 34
-                [360, 3, 16, [33, 0, 0, 0, 0], [false], 'basic', true], //lvl 35
-                [300, 2, 16, [16, 12, 8, 4, 0], [false], 'basic', false], //lvl 36
-                [360, 3.5, 16, [25, 10, 0, 0, 0], [false], 'basic', true], //lvl 37
-                [10, 5, 16, [38, 0, 0, 0, 0], [true, 2], 'basic', false], //lvl 38
-                [300, 1.5, 17, [25, 15, 10, 0, 0], [false], 'basic', false], //lvl 39
-                [360, 3, 17, [15, 15, 0, 0, 15], [false], 'basic', false], //lvl 40
-                [360, 4, 17, [21, 21, 0, 0, 0], [true, 1, 1], 'basic', true], //lvl 41
-                [7, 7, 12, [9, 9, 0, 0, 0], [true, 2, 2], 'basic', false], //lvl 42
-                [360, 3, 17, [12, 10, 10, 0, 12], [false], 'basic', false], //lvl 43
-                [240, 1, 17, [10, 10, 10, 10, 0], [false], 'basic', false], //lvl 44
-                [360, 4, 17, [20, 15, 0, 0, 10], [false], 'basic', true], //lvl 45
-                [360, 6, 12, [16, 0, 0, 0, 0], [false], 'knight', false], //lvl 46
-                [240, 2.5, 18, [50, 0, 0, 0, 0], [false], 'basic', true], //lvl 47
-                [240, 1.5, 18, [13, 13, 13, 13, 0], [false], 'basic', false], //lvl 48
-                [420, 5, 14, [25, 0, 0, 0, 0], [false], 'knight', false], //lvl 49
-                [300, 2, 18, [10, 10, 10, 10, 10], [false], 'basic', false], //lvl 50
-                [300, 3, 18, [33, 11, 0, 0, 0], [true, 2, 2], 'basic', true], //lvl 51
-                [480, 4, 16, [24, 12, 0, 0, 0], [false], 'knight', false], //lvl 52
-                [5, 3, 18, [40, 0, 0, 0, 0], [false], 'basic', false], //lvl 53
-                [25, 15, 18, [40, 0, 0, 0, 0], [true, 6], 'basic', true], //lvl 54
-                [240, 1.5, 18, [15, 13, 11, 9, 0], [true, 2, 2, 1, 1], 'basic', false], //lvl 55
-                [480, 3, 18, [44, 0, 0, 0, 0], [true, 4], 'knight', false], //lvl 56
-                [480, 3, 18, [15, 15, 15, 0, 0], [false], 'knight', false], //lvl 57
-                [300, 1, 18, [0, 15, 15, 15, 8], [false], 'basic', false], //lvl 58
-                [360, 3, 18, [20, 15, 10, 0, 3], [true, 1, 1, 1, 0, 1], 'basic', true], //lvl 59
-                [600, 5, 18, [9, 9, 9, 9, 9], [true, 2, 2, 2, 2, 2], 'knight', false], //lvl 60
+                [120, 5, 8, [7, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 1
+                [150, 4, 9, [10, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 2
+                [180, 3, 10, [13, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 3
+                [210, 2.5, 11, [16, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 4
+                [240, 2, 12, [20, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 5
+                [180, 3, 10, [10, 3, 0, 0, 0], [false], 'basic', false, 0], //lvl 6
+                [210, 2.5, 11, [12, 4, 0, 0, 0], [false], 'basic', false, 0], //lvl 7
+                [240, 2, 12, [15, 5, 0, 0, 0], [false], 'basic', false, 0], //lvl 8
+                [240, 2, 12, [20, 0, 0, 0, 0], [false], 'basic', false, 1], //lvl 9
+                [240, 2, 12, [20, 0, 0, 0, 0], [false], 'basic', false, 2], //lvl 10
+                [240, 1.6, 13, [24, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 11
+                [240, 1.6, 13, [16, 8, 0, 0, 0], [false], 'basic', false, 0], //lvl 12
+                [8, 8, 10, [12, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 13
+                [240, 1.6, 13, [12, 12, 0, 0, 0], [false], 'basic', false, 2], //lvl 14
+                [240, 1.6, 13, [25, 0, 0, 0, 0], [false], 'basic', false, 3], //lvl 15
+                [240, 1.6, 13, [22, 0, 0, 0, 0], [true, 4], 'basic', false, 1], //lvl 16
+                [240, 1.6, 13, [13, 9, 0, 0, 0], [true, 1, 1], 'basic', false, 1], //lvl 17
+                [20, 5, 11, [15, 0, 0, 0, 0], [false], 'basic', false, 3], //lvl 18
+                [240, 1.6, 13, [9, 16, 0, 0, 0], [false], 'basic', false, 0], //lvl 19
+                [240, 1.6, 13, [11, 11, 0, 0, 0], [true, 2, 2], 'basic', false, 3], //lvl 20
+                [240, 1, 14, [30, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 21
+                [300, 1.2, 14, [20, 10, 0, 0, 0], [false], 'basic', false, 0], //lvl 22
+                [300, 1.4, 14, [18, 9, 3, 0, 0], [false], 'basic', false, 0], //lvl 23
+                [300, 1.2, 14, [15, 15, 0, 0, 0], [false], 'basic', false, 3], //lvl 24
+                [300, 1.4, 14, [12, 12, 6, 0, 0], [false], 'basic', false, 1], //lvl 25
+                [300, 1.2, 14, [14, 14, 0, 0, 0], [true, 2, 2], 'basic', false, 2], //lvl 26
+                [300, 1.4, 14, [0, 18, 12, 0, 0], [false], 'basic', false, 0], //lvl 27
+                [10, 6, 12, [20, 0, 0, 0, 0], [false], 'basic', false, 3], //lvl 28
+                [300, 1.4, 14, [22, 0, 8, 0, 0], [false], 'basic', false, 1], //lvl 29
+                [300, 1.4, 14, [9, 9, 9, 0, 0], [true, 2, 2, 2], 'basic', false, 0], //lvl 30
+                [240, 0.6, 15, [35, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 31
+                [180, 3, 12, [17, 0, 0, 0, 3], [false], 'basic', false, 0], //lvl 32
+                [300, 1.4, 15, [15, 15, 5, 0, 0], [false], 'basic', false, 3], //lvl 33
+                [300, 1.2, 15, [17, 17, 0, 0, 0], [true, 1, 1], 'basic', false, 1], //lvl 34
+                [300, 2, 15, [28, 0, 0, 0, 7], [false], 'basic', false, 0], //lvl 35
+                [300, 2, 15, [30, 0, 0, 0, 5], [false], 'basic', false, 1], //lvl 36
+                [300, 1.4, 15, [11, 11, 11, 0, 0], [true, 1, 1, 1], 'basic', false, 2], //lvl 37
+                [240, 2, 13, [15, 0, 0, 0, 10], [false], 'basic', false, 3], //lvl 38
+                [300, 1.5, 15, [0, 22, 0, 0, 12], [false], 'basic', false, 0], //lvl 39
+                [360, 3, 15, [18, 12, 0, 0, 5], [false], 'basic', false, 3], //lvl 40
+                [240, 4, 12, [18, 0, 0, 0, 0], [false], 'basic', true, 0], //lvl 41
+                [300, 3, 14, [20, 8, 0, 0, 0], [false], 'basic', true, 0], //lvl 42
+                [300, 2, 16, [30, 0, 0, 0, 10], [false], 'basic', false, 1], //lvl 43
+                [300, 1, 16, [12, 10, 10, 8, 0], [false], 'basic', false, 0], //lvl 44
+                [300, 3, 16, [36, 0, 0, 0, 0], [true, 3], 'basic', true, 0], //lvl 45
+                [300, 1, 16, [14, 13, 0, 13, 0], [false], 'basic', false, 3], //lvl 46
+                [5, 5, 15, [35, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 47
+                [300, 2, 16, [16, 0, 16, 0, 9], [false], 'basic', false, 0], //lvl 48
+                [15, 3, 16, [20, 14, 6, 0, 0], [false], 'basic', false, 1], //lvl 49
+                [300, 4, 16, [30, 0, 0, 0, 3], [false], 'basic', true, 0], //lvl 50
+                [300, 2, 17, [21, 21, 0, 0, 0], [true, 1, 1], 'basic', true, 0], //lvl 51
+                [6, 6, 12, [9, 9, 0, 0, 0], [true, 2, 2], 'basic', false, 3], //lvl 52
+                [300, 2.5, 17, [12, 10, 10, 0, 12], [false], 'basic', false, 0], //lvl 53
+                [240, 1, 17, [10, 10, 10, 10, 0], [true, 2, 2, 1, 1], 'basic', false, 1], //lvl 54
+                [300, 2, 17, [10, 10, 10, 0, 15], [false], 'basic', true, 3], //lvl 55
+                [15, 15, 17, [22, 0, 0, 0, 22], [false], 'basic', false, 1], //lvl 56
+                [300, 3, 17, [20, 13, 7, 1, 0], [false], 'basic', true, 2], //lvl 57
+                [300, 3, 17, [0, 28, 0, 0, 14], [false], 'basic', true, 0], //lvl 58
+                [300, 2, 17, [8, 16, 12, 0, 7], [false], 'basic', false, 3], //lvl 59
+                [300, 5, 17, [18, 15, 0, 0, 6], [true, 1, 1, 0, 0, 3], 'basic', true, 2], //lvl 60
+                [180, 6, 12, [20, 0, 0, 0, 0], [false], 'knight', false, 0], //lvl 61
+                [240, 2.5, 18, [50, 0, 0, 0, 0], [false], 'basic', true, 2], //lvl 62
+                [240, 1.5, 18, [13, 13, 13, 13, 0], [false], 'basic', false, 2], //lvl 63
+                [240, 5, 14, [30, 0, 0, 0, 0], [false], 'knight', false, 0], //lvl 64
+                [300, 2, 18, [10, 10, 10, 10, 10], [false], 'basic', false, 3], //lvl 65
+                [300, 3, 18, [33, 11, 0, 0, 0], [true, 2, 2], 'basic', true, 1], //lvl 66
+                [300, 4, 16, [24, 12, 0, 0, 0], [true, 1, 1], 'knight', false, 0], //lvl 67
+                [3.5, 3.5, 18, [40, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 68
+                [25, 15, 18, [40, 0, 0, 0, 0], [true, 6], 'basic', true, 2], //lvl 69
+                [240, 1.5, 18, [15, 13, 11, 9, 0], [true, 2, 2, 1, 1], 'basic', false, 1], //lvl 70
+                [360, 3, 19, [56, 0, 0, 0, 0], [true, 4], 'knight', false, 0], //lvl 71
+                [360, 3, 19, [32, 26, 15, 0, 0], [false], 'knight', false, 0], //lvl 72
+                [300, 1, 19, [0, 17, 17, 17, 8], [false], 'basic', false, 3], //lvl 73
+                [300, 3, 19, [25, 15, 10, 0, 3], [true, 1, 1, 1, 0, 1], 'basic', true, 2], //lvl 74
+                [360, 5, 19, [20, 20, 16, 0, 0], [false], 'knight', false, 0], //lvl 75
+                [360, 3, 19, [26, 26, 0, 0, 0], [true, 5, 5], 'knight', false, 3], //lvl 76
+                [300, 2, 19, [18, 16, 14, 9, 0], [false], 'basic', true, 1], //lvl 77
+                [300, 3, 19, [14, 14, 12, 12, 6], [false], 'basic', true, 3], //lvl 78
+                [7, 7, 19, [50, 0, 0, 0, 0], [false], 'basic', true, 0], //lvl 79
+                [360, 5, 19, [10, 10, 10, 10, 10], [true, 2, 2, 2, 2, 2], 'knight', false, 0], //lvl 80
+                [120, 0.8, 20, [16, 16, 16, 16, 2], [false], 'basic', false, 3], //lvl 81
+                [360, 4, 20, [60, 0, 0, 0, 0], [false], 'knight', true, 0], //lvl 82
+                [15, 1, 18, [40, 0, 0, 0, 10], [true, 2, 0, 0, 0, 1], 'basic', false, 2], //lvl 83
+                [240, 1, 20, [18, 17, 16, 0, 13], [false], 'basic', true, 1], //lvl 84
+                [300, 2, 20, [38, 6, 6, 6, 3], [false], 'knight', false, 3], //lvl 85
+                [4, 4, 20, [30, 20, 12, 5, 0], [false], 'basic', false, 3], //lvl 86
+                [360, 4, 20, [50, 0, 14, 0, 0], [false], 'knight', true, 1], //lvl 87
+                [300, 2, 20, [14, 14, 14, 0, 20], [true, 1, 1, 1, 0, 3], 'knight', false, 0], //lvl 88
+                [360, 4, 20, [30, 0, 0, 0, 30], [true, 4, 0, 0, 0, 4], 'knight', true, 2], //lvl 89
+                [25, 2.5, 20, [21, 11, 22, 0, 12], [false], 'basic', true, 2], //lvl 90
+                [5, 5, 20, [45, 20, 0, 0, 0], [true, 1, 1], 'knight', false, 0], //lvl 91
+                [20, 10, 20, [55, 5, 0, 0, 0], [false], 'knight', true, 1], //lvl 92
+                [30, 0.2, 20, [70, 0, 0, 0, 0], [false], 'basic', false, 0], //lvl 93
+                [60, 1, 20, [14, 14, 14, 14, 7], [true, 1, 1, 1, 1, 1], 'basic', true, 3], //lvl 94
+                [40, 5, 20, [23, 23, 0, 0, 23], [false], 'knight', false, 3], //lvl 95
+                [2, 2, 16, [40, 0, 0, 0, 0], [true, 20], 'basic', false, 0], //lvl 96
+                [5, 5, 20, [48, 6, 6, 0, 6], [false], 'basic', true, 2], //lvl 97
+                [30, 15, 20, [30, 22, 14, 0, 0], [false], 'knight', true, 0], //lvl 98
+                [12, 2, 20, [14, 14, 14, 14, 14], [false], 'basic', true, 3], //lvl 99
+                [60, 3, 20, [12, 12, 12, 12, 12], [true, 3, 3, 3, 3, 3], 'knight', true, 3] //lvl 100
             ];
             const challengenames = ['Classic', 'Random', 'Multi', 'Negative', 'Blitz', 'Knight']
             const challengelist = [
                 [
-                    [120, 3, 9, [10, 0, 0, 0, 0], [false], 'basic', false], 
-                    [180, 1.5, 14, [30, 0, 0, 0, 0], [false], 'basic', false], 
-                    [240, 0.7, 18, [60, 0, 0, 0, 0], [false], 'basic', false], 
-                    [300, 0.4, 22, [100, 0, 0, 0, 0], [false], 'basic', false],
-                    [360, 0.2, 25, [140, 0, 0, 0, 0], [false], 'basic', false]
+                    [120, 3, 9, [10, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [180, 1.5, 14, [30, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [240, 0.7, 18, [60, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [300, 0.4, 22, [100, 0, 0, 0, 0], [false], 'basic', false, 0],
+                    [360, 0.2, 25, [140, 0, 0, 0, 0], [false], 'basic', false, 0]
                 ],
                 [
-                    [120, 3, 9, [9, 0, 0, 0, 0], [true, 2], 'basic', false], 
-                    [180, 1.5, 14, [27, 0, 0, 0, 0], [true, 6], 'basic', false], 
-                    [240, 0.7, 18, [54, 0, 0, 0, 0], [true, 12], 'basic', false], 
-                    [300, 0.4, 22, [90, 0, 0, 0, 0], [true, 20], 'basic', false],
-                    [360, 0.2, 25, [126, 0, 0, 0, 0], [true, 28], 'basic', false]
+                    [120, 3, 9, [9, 0, 0, 0, 0], [true, 2], 'basic', false, 0], 
+                    [180, 1.5, 14, [27, 0, 0, 0, 0], [true, 6], 'basic', false, 0], 
+                    [240, 0.7, 18, [54, 0, 0, 0, 0], [true, 12], 'basic', false, 0], 
+                    [300, 0.4, 22, [90, 0, 0, 0, 0], [true, 20], 'basic', false, 0],
+                    [360, 0.2, 25, [126, 0, 0, 0, 0], [true, 28], 'basic', false, 0]
                 ],
                 [
-                    [180, 4, 9, [8, 2, 0, 0, 0], [false], 'basic', false], 
-                    [270, 2, 14, [21, 9, 0, 0, 0], [false], 'basic', false], 
-                    [360, 1, 18, [30, 18, 12, 0, 0], [false], 'basic', false], 
-                    [450, 0.6, 22, [40, 30, 20, 10, 0], [false], 'basic', false],
-                    [540, 0.3, 25, [35, 35, 35, 35, 0], [false], 'basic', false]
+                    [180, 4, 9, [8, 2, 0, 0, 0], [false], 'basic', false, 0], 
+                    [270, 2, 14, [21, 9, 0, 0, 0], [false], 'basic', false, 0], 
+                    [360, 1, 18, [30, 18, 12, 0, 0], [false], 'basic', false, 0], 
+                    [450, 0.6, 22, [40, 30, 20, 10, 0], [false], 'basic', false, 0],
+                    [540, 0.3, 25, [35, 35, 35, 35, 0], [false], 'basic', false, 0]
                 ],
                 [
-                    [180, 6, 9, [8, 0, 0, 0, 2], [false], 'basic', false], 
-                    [270, 3, 14, [24, 0, 0, 0, 6], [false], 'basic', false], 
-                    [360, 1.5, 18, [36, 12, 0, 0, 12], [false], 'basic', false], 
-                    [450, 0.8, 22, [50, 30, 0, 0, 20], [false], 'basic', false],
-                    [540, 0.4, 25, [60, 30, 25, 0, 25], [false], 'basic', false]
+                    [180, 6, 9, [8, 0, 0, 0, 2], [false], 'basic', false, 0], 
+                    [270, 3, 14, [24, 0, 0, 0, 6], [false], 'basic', false, 0], 
+                    [360, 1.5, 18, [36, 12, 0, 0, 12], [false], 'basic', false, 0], 
+                    [450, 0.8, 22, [50, 30, 0, 0, 20], [false], 'basic', false, 0],
+                    [540, 0.4, 25, [60, 30, 25, 0, 25], [false], 'basic', false, 0]
                 ],
                 [
-                    [6, 6, 9, [8, 0, 0, 0, 0], [false], 'basic', false], 
-                    [5, 5, 14, [24, 0, 0, 0, 0], [false], 'basic', false], 
-                    [4, 4, 18, [48, 0, 0, 0, 0], [false], 'basic', false], 
-                    [3, 3, 22, [80, 0, 0, 0, 0], [false], 'basic', false],
-                    [2.5, 2.5, 25, [96, 16, 0, 0, 0], [false], 'basic', false]
+                    [6, 6, 9, [8, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [5, 5, 14, [24, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [4, 4, 18, [48, 0, 0, 0, 0], [false], 'basic', false, 0], 
+                    [3, 3, 22, [80, 0, 0, 0, 0], [false], 'basic', false, 0],
+                    [2.5, 2.5, 25, [96, 16, 0, 0, 0], [false], 'basic', false, 0]
                 ],
                 [
-                    [240, 8, 9, [8, 0, 0, 0, 0], [false], 'knight', false], 
-                    [360, 5, 14, [24, 0, 0, 0, 0], [false], 'knight', false], 
-                    [480, 3, 18, [48, 0, 0, 0, 0], [false], 'knight', false], 
-                    [600, 2, 22, [64, 16, 0, 0, 0], [false], 'knight', false],
-                    [720, 1.5, 25, [64, 32, 16, 0, 0], [false], 'knight', false]
+                    [240, 8, 9, [8, 0, 0, 0, 0], [false], 'knight', false, 0], 
+                    [360, 5, 14, [24, 0, 0, 0, 0], [false], 'knight', false, 0], 
+                    [480, 3, 18, [48, 0, 0, 0, 0], [false], 'knight', false, 0], 
+                    [600, 2, 22, [64, 16, 0, 0, 0], [false], 'knight', false, 0],
+                    [720, 1.5, 25, [64, 32, 16, 0, 0], [false], 'knight', false, 0]
                 ]
             ]
             const difficulties = ['Easy','Normal','Hard','Extreme','Insane'];
@@ -401,7 +445,7 @@
                 `<input class="checker unlocked" value="Try Again" type="button" id="fail" onclick="level(lvl, challenge)">`,
                 ``
             ]
-            const difcolors = ['#25C40C','#EFDF00','#E8A303','#EF4000','#A900F2'];
+            const difcolors = ['#3C52E1','#44D45C','#EBF21B','#F28D1B','#F21B1B'];
             const customborder = [5, 36];
             var passed = [];
             var area = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
@@ -410,7 +454,7 @@
             var size = 9;
             var bombs = [10, 0];
             var cap = [false];
-            var loop = [false, false]
+            var loop = 0;
             var bombscopy = [10, 0];
             var bombsum = 10;
             var places = 0;
@@ -524,6 +568,7 @@
                         custom[4] = [false];
                         custom[5] = document.getElementById('getar').value;
                         custom[6] = document.getElementById('getcoc').checked;
+                        custom[7] = 0;
                         if(custom[2]>=customborder[0] && custom[2]<=customborder[1]){
                             
                         }
@@ -601,6 +646,7 @@
                         c = [...levellist[lvl-1][4]];
                         ar = levellist[lvl-1][5];
                         coc = levellist[lvl-1][6];
+                        l = levellist[lvl-1][7];
                     }
                     else{
                         ti = levellist[levellist.length-1][0];
@@ -610,6 +656,7 @@
                         c = [...levellist[levellist.length-1][4]];
                         ar = levellist[levellist.length-1][5];
                         coc = levellist[levellist.length-1][6];
+                        l = levellist[levellist.length-1][7];
                     }
                     name = `Level ${x}`;
                 }
@@ -621,6 +668,7 @@
                     c = [...challengelist[y][x][4]];
                     ar = challengelist[y][x][5];
                     coc = challengelist[y][x][6];
+                    l = challengelist[y][x][7];
                     name = `<div style='color: ${difcolors[x]}'>${challengenames[y]}</div>`;
                 }
                 else if(mode == 2){
@@ -631,11 +679,12 @@
                     c = [...custom[4]];
                     ar = custom[5];
                     coc = custom[6];
+                    l = custom[7];
                     name = `Custom Level`;
                 }
-                info(ti, inc, a, b, c, ar, coc)
+                info(ti, inc, a, b, c, ar, coc, l)
             }
-            function info(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false){
+            function info(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false, l=0){
                 let val = ''
                 document.getElementById('con').innerHTML=`
                     <div id='middler' style='text-align: center;'></div>`
@@ -662,11 +711,13 @@
                         <div class='space'></div>
                         <div class='med'>Mine Template: ${ar} </div>
                         <div class='space'></div>`;
+                val += `<div class='med'>Looped: ${loops[l]} </div>
+                        <div class='space'></div>`
                 if(coc == true){val += `<div class='med'>Cockroach modifier</div><div class='space'></div>`}
-                val += `<input class="checker unlocked" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc)">`
+                val += `<input class="checker unlocked" value="Play" type="button" id="next" onclick="generate(ti, inc, a, b, c, ar, coc, l)">`
                 document.getElementById('middler').innerHTML=val;    
             }
-            function generate(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false, l=[false, false]){
+            function generate(ti=120, inc=2, a=9, b=[10], c=[false], ar='basic', coc=false, l=0){
                 state = 0;
                 size = a;
                 bombs = b;
@@ -722,6 +773,10 @@
                         </div>`
                 document.getElementById('con').innerHTML=val;val='';
                 document.getElementById('bombscounter').innerHTML=bombdisplay();
+                if(l==0){val += `<div class='bor' style='border-color: gray gray'>`}
+                else if(l==1){val += `<div class='bor' style='border-color: gray orange'>`}
+                else if(l==2){val += `<div class='bor' style='border-color: aqua gray'>`}
+                else if(l==3){val += `<div class='bor' style='border-color: aqua orange'>`}
                 val += `<table style='border-collapse: collapse; padding: 0; margin: 0;'>`;
                 for(let i=0;i<size;i++){
                     val += "<tr>";
@@ -735,7 +790,7 @@
                     }
                     val += "</tr>";
                 }
-                val += "</table>";
+                val += "</table></div>";
                 document.getElementById('border').innerHTML=val;val='';
                 placecount();
                 for(i=1;i<flagallow.length;i++){
@@ -784,7 +839,7 @@
                     value-=10/t;
                     counter = t * value / 100;
                     document.getElementById("counter").innerHTML=counter.toFixed(1)+" s";
-                    document.getElementById("timer").innerHTML=`<div id="timer2" style="width:${value}%;"></div>`;
+                    document.getElementById("timer").innerHTML=`<div id="timer2" style="width:${value}%; background-color: rgb(${Math.floor(256-value*2.56)}, ${Math.floor(value*2)}, ${Math.floor(Math.max(value*4-200),0)});"></div>`;
                 }
             }
             function bomb(x){
@@ -867,45 +922,14 @@
             function change(x, c = false){
                 var count = 0
                 var ncount = 0
-                /*for(let i=0;i<bomblist.length;i++){
-                    if(x==bomblist[i]){count+=100;}
-                    else{
-                        for(j=0;j<area.length;j++){
-                            if(checkarea(x, j) === true && (bomblist[i] == x + size * area[j][1] + area[j][0])){
-                                if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
-                                else{ncount-=mainlist[bomblist[i]][2]}
-                            }
-                            else if(checkarea(x, j) !== false && checkarea(x, j) !== true && bomblist[i] == x + size * area[j][1] + area[j][0] + checkarea(x, j)){
-                                if(mainlist[bomblist[i]][2]>0){count+=mainlist[bomblist[i]][2];}
-                                else{ncount-=mainlist[bomblist[i]][2]}
-                            }
-                        }
-                    }
-                }*/
                 for(i=0;i<area.length;i++){
                     if(mainlist[x][2]!=0){count+=100;}
                     if(checkarea(x, i) !== false){
-                        if(checkarea(x, i)>0){count+=mainlist[checkarea(x, i)][2];}
+                        if(mainlist[checkarea(x, i)][2]>0){count+=mainlist[checkarea(x, i)][2];}
                         else{ncount-=mainlist[checkarea(x, i)][2]}
                     }
                 }
                 mainlist[x][1] = 1;
-                /*if(count==0 && ncount==0){
-                    for(let i=0; i<area.length; i++){
-                        if(checkarea(x, i) === true && mainlist[x+area[i][0]+size*area[i][1]][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]][1] != 0.5){
-                            checknext.push(x+area[i][0]+size*area[i][1])
-                            if(c == false){
-                                mainlist[x+area[i][0]+size*area[i][1]][1] = 0.5;
-                            }
-                        }
-                        else if(checkarea(x, i) !== false && checkarea(x, i) !== true && mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] != 1 && mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] != 0.5){
-                            checknext.push(x+area[i][0]+size*area[i][1]+checkarea(x, i));
-                            if(c == false){
-                                mainlist[x+area[i][0]+size*area[i][1]+checkarea(x, i)][1] = 0.5;
-                            }
-                        }
-                    }
-                }*/
                 if(count==0 && ncount==0){
                     for(let i=0; i<area.length; i++){
                         if(checkarea(x, i) !== false && mainlist[checkarea(x, i)][1] != 1 && mainlist[checkarea(x, i)][1] != 0.5){
@@ -924,24 +948,20 @@
                 z += area[y][0];
                 z += area[y][1]*size;
                 if(area[y][0]<0 && (x-1) % size < Math.abs(area[y][0])){
-                    if(loop[0] == false){allow = false;}
+                    if(loop % 2 == 0){allow = false;}
                     else{z += size;}
-                    //if(loop[0] == true){z += size}
                 }
                 else if(area[y][0]>0 && (x-1) % size >= size - area[y][0]){
-                    if(loop[0] == false){allow = false;}
+                    if(loop % 2 == 0){allow = false;}
                     else{z -= size;}
-                    //if(loop[0] == true){z -= size}
                 }
                 if(area[y][1]<0 && x <= size * Math.abs(area[y][1])){
-                    if(loop[1] == false){allow = false;}
+                    if(loop < 2){allow = false;}
                     else{z += size * size;}
-                    //if(loop[1] == true){z += size * size}
                 }
                 else if(area[y][1]>0 && x + size * area[y][1] > size*size){
-                    if(loop[1] == false){allow = false;}
+                    if(loop < 2){allow = false;}
                     else{z -= size * size;}
-                    //if(loop[1] == true){z -= size * size}
                 }
                 if(allow == true){allow = x + z;}
                 return allow;
